@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
       title: 'AWS Covid Care',
       showSemanticsDebugger: false,
       theme: ThemeData(
+        fontFamily: 'Open Sans',
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
