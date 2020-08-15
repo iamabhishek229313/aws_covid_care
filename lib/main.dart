@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'AWS Covid Care',
       showSemanticsDebugger: false,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Open Sans',
         primarySwatch: Colors.blue,
