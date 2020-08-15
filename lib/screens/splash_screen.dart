@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<dynamic> _fetchFirstTimeState() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isFirstTime = prefs.getBool(AppConstants.firstUser);
+    bool isFirstTime = prefs.getBool(AppConstants.firstUser) ?? false;
     return _jumpToScreen(isFirstTime);
   }
 
@@ -43,9 +43,10 @@ class _SplashScreenState extends State<SplashScreen> {
         future: _fetchFirstTimeState(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           // Wether we have data or not? Ans: We don't care it's not an API call.
-          return Scaffold(
-            body: Container(
-              color: Colors.blueGrey,
+          return Container(
+            constraints: BoxConstraints.expand(),
+            color: Colors.blueGrey,
+            child: Center(
               child: Text(
                 "Hello!",
                 style: TextStyle(fontSize: 45.0),

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:aws_covid_care/screens/state_wrapper_screen.dart';
 import 'package:aws_covid_care/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,6 +38,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 prefs.setBool(AppConstants.firstUser, true).then((value) {
                   print("Saved Preference as a value of = " + value.toString());
                 });
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => StateWrapperScreen()));
               },
               backgroundColor: Colors.black,
               icon: Icon(

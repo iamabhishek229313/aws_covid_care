@@ -19,6 +19,8 @@ dependencies:
   cloud_firestore: ^0.13.7
   smooth_page_indicator: ^0.2.0
   shared_preferences: ^0.5.8
+  flutter_phoenix: ^0.1.0
+
 
 dev_dependencies:
   flutter_test:
