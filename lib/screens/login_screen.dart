@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:aws_covid_care/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -122,7 +123,9 @@ class _LoginState extends State<Login> {
                         width: 5,
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => Register()));
+                        },
                         child: Text(
                           'Sign Up',
                           style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 17),
