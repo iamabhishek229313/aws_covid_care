@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:aws_covid_care/screens/register_screen.dart';
+import 'package:aws_covid_care/services/firebase_authentication.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -9,6 +11,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  Authentication _authentication = Authentication();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   TextEditingController _emailController = TextEditingController();
@@ -89,11 +92,30 @@ class _LoginState extends State<Login> {
                   SizedBox(
                     width: screenWidth,
                     child: RaisedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           // Will do something.
                           log("Email add = " + _emailController.text);
                           log("Pass  = " + _passwordController.text);
+                          FirebaseUser _user;
+                          try {
+                            _user = await _authentication.handleSignInEmail(
+                                _emailController.text, _passwordController.text);
+                          } catch (e) {
+                            Widget alert = AlertDialog(
+                              title: Text("Error ceredentials"),
+                              content:
+                                  Text("User doesn't exists or password is incorrect. Try creating a new account."),
+                              actions: [
+                                FlatButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text("TRY AGAIN"),
+                                )
+                              ],
+                            );
+                            showDialog(context: context, builder: (_) => alert);
+                            log(e.toString());
+                          }
                         } else {
                           setState(() {
                             _autoValidate = true;
@@ -124,7 +146,7 @@ class _LoginState extends State<Login> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => Register()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (_) => Register()));
                         },
                         child: Text(
                           'Sign Up',

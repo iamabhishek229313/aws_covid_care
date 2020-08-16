@@ -1,5 +1,9 @@
 import 'dart:developer';
 
+import 'package:aws_covid_care/models/user.dart';
+import 'package:aws_covid_care/services/firebase_authentication.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -8,6 +12,8 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  Authentication _authentication = Authentication();
+  Firestore _firestore = Firestore.instance;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
 
@@ -34,6 +40,11 @@ class _RegisterState extends State<Register> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0.0,
+      ),
       body: SingleChildScrollView(
         child: Container(
           height: screenHeight - MediaQuery.of(context).padding.top,
@@ -89,18 +100,35 @@ class _RegisterState extends State<Register> {
                     height: 16.0,
                   ),
                   TextFormField(
+                    controller: _phoneNumberController,
+                    autovalidate: _autoValidate,
+                    keyboardType: TextInputType.number,
+                    validator: (value) => value.isEmpty ? "Enter a phone number" : null,
+                    decoration: InputDecoration(
+                        icon: Icon(
+                          Icons.dialpad,
+                          color: Colors.black12,
+                        ),
+                        labelText: 'Phone Number',
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+                        hintText: 'Phone Number'),
+                  ),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  TextFormField(
                     controller: _passController,
                     autovalidate: _autoValidate,
                     validator: (value) => value.isEmpty ? "Enter a password" : null,
                     obscureText: true,
                     decoration: InputDecoration(
                         icon: Icon(
-                          Icons.mail_outline,
+                          Icons.lock_outline,
                           color: Colors.black12,
                         ),
                         labelText: 'Password',
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-                        hintText: 'Email address'),
+                        hintText: 'Password'),
                   ),
                   SizedBox(
                     height: 16.0,
@@ -112,7 +140,7 @@ class _RegisterState extends State<Register> {
                     obscureText: true,
                     decoration: InputDecoration(
                         icon: Icon(
-                          Icons.lock,
+                          Icons.lock_outline,
                           color: Colors.black12,
                         ),
                         labelText: 'Confirm Password',
@@ -125,7 +153,7 @@ class _RegisterState extends State<Register> {
                   SizedBox(
                     width: screenWidth,
                     child: RaisedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           // Will do something.
                           log("Full Name add = " + _fullNameController.text);
@@ -138,9 +166,41 @@ class _RegisterState extends State<Register> {
                               content: Text("Confim Password didn't match! Please try again"),
                               actions: [FlatButton(onPressed: () => Navigator.pop(context), child: Text("OK"))],
                             );
-                            showDialog(context: context, builder: (_) => alert);
+                            showDialog(context: context, builder: (context) => alert);
                           } else {
                             // Will talk to backend.
+                            FirebaseUser _user;
+                            try {
+                              _user = await _authentication.handleSignUp(_emailController.text, _passController.text);
+                            } catch (e) {
+                              Widget alert = AlertDialog(
+                                title: Text("Error creating new user!"),
+                                content: Text("User may exists in database. Try creating a with other e-mail address."),
+                                actions: [
+                                  FlatButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text("TRY AGAIN"),
+                                  )
+                                ],
+                              );
+                              showDialog(context: context, builder: (_) => alert);
+                              log(e.toString());
+                            }
+
+                            if (_user != null) {
+                              // Adding the user to the database.
+                              Coords coord = Coords("XXX XXXXX", "XXXX XXXX");
+                              User _userDetils = User(
+                                  _fullNameController.text, _emailController.text, _phoneNumberController.text, coord);
+                              await _firestore
+                                  .collection("users")
+                                  .document("${_user.uid}")
+                                  .setData(_userDetils.toJson())
+                                  .then((value) {
+                                log("Updated the data in the fireStore.");
+                                Navigator.pop(context);
+                              });
+                            }
                           }
                         } else {
                           setState(() {

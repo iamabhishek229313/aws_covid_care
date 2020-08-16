@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Open Sans',
         primarySwatch: Colors.blue,
+        iconTheme: IconThemeData(color: Colors.black),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: SplashScreen(),

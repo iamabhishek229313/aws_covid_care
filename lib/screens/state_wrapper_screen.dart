@@ -1,5 +1,8 @@
+import 'package:aws_covid_care/screens/home_screen.dart';
 import 'package:aws_covid_care/screens/login_screen.dart';
 import 'package:aws_covid_care/screens/register_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class StateWrapperScreen extends StatelessWidget {
@@ -17,6 +20,12 @@ class StateWrapperScreen extends StatelessWidget {
     //   ),
     // );
 
-    return Login();
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return Login();
+        return HomeScreen();
+      },
+    );
   }
 }
