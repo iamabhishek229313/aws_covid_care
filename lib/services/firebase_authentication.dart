@@ -58,10 +58,10 @@ class Authentication {
   handleSignOut() async {
     if (_firebaseAuth.currentUser() != null) {
       await _firebaseAuth.signOut().then((value) {
-        print("User is Signed out");
+        log("User is Signed out");
       }).catchError((e) => print(e));
     } else if (_firebaseAuth.currentUser() == null) {
-      print("User is not there.");
+      log("User is not there.");
     }
   }
 }

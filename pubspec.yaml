@@ -20,7 +20,7 @@ dependencies:
   smooth_page_indicator: ^0.2.0
   shared_preferences: ^0.5.8
   flutter_phoenix: ^0.1.0
-
+  font_awesome_flutter: ^8.8.1
 
 dev_dependencies:
   flutter_test:
