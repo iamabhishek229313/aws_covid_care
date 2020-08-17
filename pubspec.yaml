@@ -23,7 +23,7 @@ dependencies:
   font_awesome_flutter: ^8.8.1
   geolocator: ^5.3.2+2
   workmanager: ^0.2.0
-  flutter_local_notifications: ^1.4.4+3
+  flutter_local_notifications: "1.3.0"
 
 dev_dependencies:
   flutter_test:
