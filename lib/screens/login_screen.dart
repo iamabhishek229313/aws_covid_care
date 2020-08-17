@@ -49,13 +49,14 @@ class _LoginState extends State<Login> {
                   borderRadius: BorderRadius.circular(20.0),
                   color: Colors.white,
                 ),
-                height: screenHeight * 0.5,
+                // height: screenHeight * 0.5,
                 width: screenWidth * 0.9,
                 child: Form(
                   key: _formKey,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24.0),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(

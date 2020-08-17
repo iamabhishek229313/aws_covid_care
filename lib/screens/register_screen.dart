@@ -57,7 +57,7 @@ class _RegisterState extends State<Register> {
                   borderRadius: BorderRadius.circular(20.0),
                   child: Container(
                     width: screenWidth * 0.9,
-                    height: screenHeight * 0.7,
+                    // height: screenHeight * 0.7,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
                       color: Colors.white,
@@ -67,6 +67,7 @@ class _RegisterState extends State<Register> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 24.0),
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Text(
