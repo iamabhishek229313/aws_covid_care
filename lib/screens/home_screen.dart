@@ -15,14 +15,17 @@ void callbackDispatcher() {
   Workmanager.executeTask((taskName, inputData) async {
     switch (taskName) {
       case fetchBackground:
-        log("Callback Dispatcher with Service  = " + fetchBackground + " is initialized");
-        Geolocator _geolocator = Geolocator();
+        // Making a varibale in the Shared preferences.
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        int count = prefs.getInt(AppConstants.locationDected) ?? 0;
-        count++;
+        int count = prefs.getInt(AppConstants.locationDected) ?? 0; // Setting it null, if it is a first try.
+        count++; // Incrementing the count by one.
+        // Setting the values in the Shared Preferences.
         prefs.setInt(AppConstants.locationDected, count);
-        // GeolocationStatus _geoLocationStatus = await _geolocator.checkGeolocationPermissionStatus();
-        Position _fetchedUserLocation = await _geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+        // Detecting the location.
+        Position _fetchedUserLocation = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+        // After collection of Data send it to the flutter_local_notifications. (Both Position Object & count are passed up to show them.)
         notif.Notification _notif = new notif.Notification();
         _notif.showNotificationWithoutSound(_fetchedUserLocation, count);
         break;
@@ -38,61 +41,68 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Authentication _authentication = Authentication();
-  SharedPreferences prefs;
-  Position _position;
+  bool _tracing = false;
 
   @override
   void initState() {
     super.initState();
   }
 
-  void _geoLocation() async {
-    log("There");
+  void _startBackgroundLocationTracker() async {
     Geolocator _geolocator = Geolocator();
-    prefs = await SharedPreferences.getInstance();
-    GeolocationStatus _geoLocationStatus = await _geolocator.checkGeolocationPermissionStatus();
-    Position _userPosition = await _geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    setState(() {
-      log("Wprked");
-      _position = _userPosition;
-    });
-    log(_position.toString());
-    // return _userPosition;
-    Workmanager.initialize(callbackDispatcher, isInDebugMode: true);
-    Workmanager.registerPeriodicTask("1", fetchBackground, frequency: Duration(minutes: 15));
+    await _geolocator.checkGeolocationPermissionStatus();
+    await _geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    GeolocationStatus _geoStatus = await _geolocator.checkGeolocationPermissionStatus();
+    log("GEOSTATUS VALUE" + _geoStatus.value.toString());
+    if (_geoStatus.value == 2) {
+      log("Location Allowed!");
+      setState(() {
+        _tracing = true;
+      });
+      Workmanager.initialize(callbackDispatcher, isInDebugMode: false);
+      Workmanager.registerPeriodicTask("1", fetchBackground, frequency: Duration(minutes: 15));
+    } else {
+      Widget alert = AlertDialog(
+        title: Text("Allow location"),
+        content: Text("We don't spy 🍻"),
+        actions: [FlatButton(onPressed: () => Navigator.pop(context), child: Text("OK"))],
+      );
+      showDialog(context: context, builder: (_) => alert);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text("Home screen"),
         actions: [
           IconButton(
               icon: Icon(Icons.exit_to_app),
-              onPressed: () {
-                _authentication.handleSignOut();
-              })
+              onPressed: () async {
+                await Workmanager.cancelByTag(fetchBackground).then((value) => _authentication.handleSignOut());
+              }),
+          Text("Logout")
         ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            (prefs != null)
+            _tracing
                 ? Text(
-                    'How many times background service is maded = ' +
-                        (prefs.getInt(AppConstants.locationDected) ?? 0).toString(),
+                    'You will be get notified within 15 min/more with counts',
                     style: TextStyle(fontSize: 14.0, color: Colors.black),
                   )
                 : SizedBox(),
             RaisedButton(
-                onPressed: () {
-                  _geoLocation();
+                onPressed: () async {
+                  _startBackgroundLocationTracker();
                 },
                 elevation: 10.0,
-                color: Colors.blueAccent,
+                color: _tracing ? Colors.green : Colors.blueAccent,
                 child: Text(
-                  "Start Background Services",
+                  _tracing ? "STARTED" : "Start Background Geolocation",
                   style: TextStyle(fontSize: 18.0, color: Colors.white),
                 ))
           ],
