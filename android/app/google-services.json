@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "642573476346",
+    "firebase_url": "https://aws-covid-care.firebaseio.com",
+    "project_id": "aws-covid-care",
+    "storage_bucket": "aws-covid-care.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642573476346:android:bedf1babfb55fe17780443",
+        "android_client_info": {
+          "package_name": "com.example.aws_covid_care"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642573476346-opuqi3ii596mimel6o7eig4agcflhch0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aws_covid_care",
+            "certificate_hash": "4a229355cb72f05bf7d6bcff54df1844eec00be2"
+          }
+        },
+        {
+          "client_id": "642573476346-ha97j4ulvothuj0ci127tlsr0cqtggg9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPJrA_SU13htv6kk59liTBhGXymU10iws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "642573476346-ha97j4ulvothuj0ci127tlsr0cqtggg9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

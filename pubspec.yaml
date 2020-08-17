@@ -17,6 +17,13 @@ dependencies:
   http: ^0.12.2
   firebase_auth: ^0.16.1
   cloud_firestore: ^0.13.7
+  smooth_page_indicator: ^0.2.0
+  shared_preferences: ^0.5.8
+  flutter_phoenix: ^0.1.0
+  font_awesome_flutter: ^8.8.1
+  geolocator: ^5.3.2+2
+  workmanager: ^0.2.0
+  flutter_local_notifications: ^1.4.4+3
 
 dev_dependencies:
   flutter_test:
