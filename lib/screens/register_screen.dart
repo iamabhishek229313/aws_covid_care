@@ -5,6 +5,8 @@ import 'package:aws_covid_care/services/firebase_authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:aws_covid_care/utils/constants.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -206,6 +208,9 @@ class _RegisterState extends State<Register> {
                                       }
 
                                       if (_user != null) {
+                                        SharedPreferences _prefs = await SharedPreferences.getInstance();
+                                        _prefs.setString(AppConstants.userId, _user.uid);
+                                        log("Shared Prefence user id Chnages to new one!");
                                         // Adding the user to the database.
                                         Coords coord = Coords("XXX XXXXX", "XXXX XXXX");
                                         User _userDetils = User(_fullNameController.text, _emailController.text,
@@ -214,7 +219,7 @@ class _RegisterState extends State<Register> {
                                             .collection("users")
                                             .document("${_user.uid}")
                                             .setData(_userDetils.toJson())
-                                            .then((value) {
+                                            .then((value) async {
                                           log("Updated the data in the fireStore.");
                                           Navigator.pop(context);
                                         });

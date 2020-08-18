@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:aws_covid_care/screens/register_screen.dart';
 import 'package:aws_covid_care/services/firebase_authentication.dart';
+import 'package:aws_covid_care/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -116,8 +118,11 @@ class _LoginState extends State<Login> {
                                 log("Pass  = " + _passwordController.text);
                                 FirebaseUser _user;
                                 try {
-                                  _user = await _authentication.handleSignInEmail(
-                                      _emailController.text, _passwordController.text);
+                                  _user = await _authentication
+                                      .handleSignInEmail(_emailController.text, _passwordController.text)
+                                      .then((value) {
+                                    if (value != null) {}
+                                  });
                                 } catch (e) {
                                   Widget alert = AlertDialog(
                                     title: Text("Error ceredentials"),
@@ -132,6 +137,10 @@ class _LoginState extends State<Login> {
                                   );
                                   showDialog(context: context, builder: (_) => alert);
                                   log(e.toString());
+                                }
+                                if (_user != null) {
+                                  SharedPreferences _prefs = await SharedPreferences.getInstance();
+                                  _prefs.setString(AppConstants.userId, _user.uid);
                                 }
                               } else {
                                 setState(() {
