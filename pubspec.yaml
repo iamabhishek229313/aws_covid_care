@@ -27,7 +27,8 @@ dependencies:
   provider:
   carousel_slider: ^2.2.1
   flutter_staggered_animations: "^0.1.2"
-
+  cache_image: "^1.0.5"
+  image_fade: ^0.2.1
 
 dev_dependencies:
   flutter_test:
@@ -55,7 +56,7 @@ flutter:
           weight: 700
         - asset: assets/fonts/OpenSans-ExtraBold.ttf
           weight: 900
-          
+
     - family: 'Open Sans'
       fonts:
         - asset: assets/fonts/OpenSans-Light.ttf

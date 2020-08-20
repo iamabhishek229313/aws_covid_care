@@ -2,7 +2,9 @@ import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:aws_covid_care/models/user.dart';
+import 'package:aws_covid_care/screens/covid_detail_screen.dart';
 import 'package:aws_covid_care/screens/faq_screen.dart';
+import 'package:aws_covid_care/screens/myth_busters_screen.dart';
 import 'package:aws_covid_care/services/notification.dart' as notif;
 
 import 'package:aws_covid_care/services/firebase_authentication.dart';
@@ -136,18 +138,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => MythBusterScreen()));
+                  },
+                  title: Text("Myth Busters"),
+                  trailing: Icon(FontAwesomeIcons.fileMedicalAlt),
+                ),
+                ListTile(
+                  onTap: () async {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => CovidDetailScreen()));
+                  },
+                  title: Text("What is COVID-19?"),
+                  trailing: Icon(FontAwesomeIcons.viruses),
+                ),
+                ListTile(
+                  onTap: () async {
+                    Navigator.pop(context);
                     Navigator.of(context).push(MaterialPageRoute(builder: (_) => FAQScreen()));
                   },
                   title: Text("FAQ's"),
                   trailing: Icon(FontAwesomeIcons.questionCircle),
-                ),
-                ListTile(
-                  onTap: () async {
-                    await Workmanager.cancelByTag(fetchBackground).then((value) => _authentication.handleSignOut());
-                    _sharedPreferences.remove(AppConstants.userId);
-                  },
-                  title: Text("Logout"),
-                  trailing: Icon(Icons.exit_to_app),
                 ),
                 ListTile(
                   onTap: () async {
@@ -182,12 +192,6 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Padding(
               padding: EdgeInsets.only(top: 8.0),
               child: Column(
-                // children: AnimationConfiguration.toStaggeredList(
-                //   duration: Duration(milliseconds: 375),
-                //   childAnimationBuilder: (widget) => SlideAnimation(
-                //     horizontalOffset: screenWidth / 2,
-                //     child: FadeInAnimation(child: widget),
-                //   ),
                 children: [
                   SizedBox(
                     height: screenHeight * 0.22,
