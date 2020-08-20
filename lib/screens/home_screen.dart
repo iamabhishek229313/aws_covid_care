@@ -4,8 +4,9 @@ import 'dart:math' as math;
 import 'package:aws_covid_care/models/user.dart';
 import 'package:aws_covid_care/screens/covid_detail_screen.dart';
 import 'package:aws_covid_care/screens/faq_screen.dart';
+import 'package:aws_covid_care/screens/grid_items/symptoms_screen.dart';
 import 'package:aws_covid_care/screens/myth_busters_screen.dart';
-import 'package:aws_covid_care/screens/prevention_screen.dart';
+import 'package:aws_covid_care/screens/grid_items/prevention_screen.dart';
 import 'package:aws_covid_care/services/notification.dart' as notif;
 
 import 'package:aws_covid_care/services/firebase_authentication.dart';
@@ -77,7 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
       GridItems(
           title: "PREVENTIONS",
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PreventionScreen()))),
-      GridItems(title: "SYMPTOMS"),
+      GridItems(
+          title: "SYMPTOMS",
+          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => SymptomsScreen()))),
       GridItems(title: "NEWS"),
     ];
   }
