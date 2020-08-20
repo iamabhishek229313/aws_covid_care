@@ -5,6 +5,8 @@ import 'package:aws_covid_care/services/firebase_authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:aws_covid_care/utils/constants.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -65,7 +67,7 @@ class _RegisterState extends State<Register> {
                     child: Form(
                       key: _formKey,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 24.0),
+                        padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -206,7 +208,6 @@ class _RegisterState extends State<Register> {
                                       }
 
                                       if (_user != null) {
-                                        // Adding the user to the database.
                                         Coords coord = Coords("XXX XXXXX", "XXXX XXXX");
                                         User _userDetils = User(_fullNameController.text, _emailController.text,
                                             _phoneNumberController.text, coord);
@@ -214,7 +215,7 @@ class _RegisterState extends State<Register> {
                                             .collection("users")
                                             .document("${_user.uid}")
                                             .setData(_userDetils.toJson())
-                                            .then((value) {
+                                            .then((value) async {
                                           log("Updated the data in the fireStore.");
                                           Navigator.pop(context);
                                         });

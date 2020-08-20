@@ -7,7 +7,20 @@ class Notification {
   // In class global un-declared object.
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
-  Future showNotificationWithoutSound(Position pos) async {
+  // Constructor
+  Notification() {
+    log("Notification constructor is invoked!");
+    var _initializationSetingAndroid = new AndroidInitializationSettings('@mipmap/ic_launcher');
+    var _initializationSettingIOS = new IOSInitializationSettings();
+
+    var _initializationSetting = new InitializationSettings(_initializationSetingAndroid, _initializationSettingIOS);
+
+    _flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    _flutterLocalNotificationsPlugin.initialize(_initializationSetting);
+    log(_flutterLocalNotificationsPlugin.toString());
+  }
+
+  Future showNotificationWithoutSound(Position pos, int count) async {
     log(pos.toString());
     var _androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         '1', 'location-bg', "fetched Background location",
@@ -18,18 +31,15 @@ class Notification {
     var _platformChannelSpecifics =
         new NotificationDetails(_androidPlatformChannelSpecifics, _iosPlatformChannelSpecifics);
 
-    await _flutterLocalNotificationsPlugin.show(0, 'Location fetched', pos.toString(), _platformChannelSpecifics,
-        payload: '');
-  }
+    try {
+      await _flutterLocalNotificationsPlugin.show(
+          0, 'Location fetched', pos.toString() + " " + "Count is = " + count.toString(), _platformChannelSpecifics,
+          payload: '');
+    } catch (e) {
+      log("Exception catched!");
+      print(e);
+    }
 
-  // Constructor
-  Notification() {
-    var _initializationSetingAndroid = new AndroidInitializationSettings('@mipmap/ic_launcher');
-    var _initializationSettingIOS = new IOSInitializationSettings();
-
-    var _initializationSetting = new InitializationSettings(_initializationSetingAndroid, _initializationSettingIOS);
-
-    _flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-    _flutterLocalNotificationsPlugin.initialize(_initializationSetting);
+    log("Finished Notification");
   }
 }

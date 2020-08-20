@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:aws_covid_care/screens/register_screen.dart';
 import 'package:aws_covid_care/services/firebase_authentication.dart';
+import 'package:aws_covid_care/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -54,7 +56,7 @@ class _LoginState extends State<Login> {
                 child: Form(
                   key: _formKey,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24.0),
+                    padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
