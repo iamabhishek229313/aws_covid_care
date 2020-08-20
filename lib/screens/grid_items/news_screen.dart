@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:aws_covid_care/core/repository/api/current_data.dart';
 import 'package:aws_covid_care/core/repository/api/news_data.dart';
 import 'package:aws_covid_care/core/repository/api/top_headlines_data.dart';
@@ -18,11 +20,13 @@ class _NewsState extends State<News> {
   NewsData newsData = NewsData();
   bool isLoading = true;
   PageController _pageController = PageController();
+  ScrollController _scrollController;
 
   @override
   void initState() {
     getNews();
     super.initState();
+    _scrollController = ScrollController();
   }
 
   getNews() async {
@@ -57,78 +61,86 @@ class _NewsState extends State<News> {
     var headlines = topheadlinesData.headlines;
     var articles = newsData.articles;
     TopheadlinesData().refresh();
-    return RefreshIndicator(
-      onRefresh: refreshPage,
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            expandedHeight: height * 0.35,
-            backgroundColor: Colors.white,
-            flexibleSpace: FlexibleSpaceBar(
-              title: SmoothPageIndicator(
-                controller: _pageController,
-                count: headlines.length,
-                effect: ScrollingDotsEffect(
-                  dotColor: const Color(0x66FFFFFF),
-                  activeDotColor: const Color(0xFFFFFFFF),
-                  activeDotScale: width * 0.003,
-                  dotWidth: width * 0.025,
-                  dotHeight: width * 0.025,
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: refreshPage,
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: <Widget>[
+            SliverAppBar(
+              pinned: true,
+              floating: false,
+              backgroundColor: Colors.white,
+              expandedHeight: height * 0.35,
+              flexibleSpace: FlexibleSpaceBar(
+                title: isLoading
+                    ? SizedBox()
+                    : SmoothPageIndicator(
+                        controller: _pageController,
+                        count: headlines.length,
+                        effect: ScrollingDotsEffect(
+                          dotColor: const Color(0x66FFFFFF),
+                          activeDotColor: const Color(0xFFFFFFFF),
+                          activeDotScale: width * 0.003,
+                          dotWidth: width * 0.015,
+                          dotHeight: width * 0.015,
+                        ),
+                      ),
+                centerTitle: true,
+                background: isLoading
+                    ? Center(
+                        child: ShimmerContainer(
+                        height: height * 0.3,
+                        width: width * 0.9,
+                        radius: 28.0,
+                      ))
+                    : PageView(
+                        controller: _pageController,
+                        children: List.generate(
+                          headlines.length,
+                          (index) {
+                            return HeaderImage(
+                              imageURL: headlines[index].urlToImage,
+                              text: headlines[index].title,
+                            );
+                          },
+                        ),
+                      ),
+              ),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return ArticlePage(
+                            articleUrl: articles[index].url,
+                            title: articles[index].title,
+                          );
+                        }));
+                      },
+                      child: isLoading
+                          ? buildLoadingList(
+                              height,
+                              width,
+                            )
+                          : buildNewsList(
+                              height,
+                              width,
+                              articles,
+                              index,
+                            ),
+                    );
+                  },
+                  childCount: isLoading ? 6 : articles.length,
                 ),
               ),
-              centerTitle: true,
-              background: isLoading
-                  ? Center(
-                      child: ShimmerContainer(
-                      height: height * 0.3,
-                      width: width * 0.9,
-                      radius: 28.0,
-                    ))
-                  : PageView(
-                      controller: _pageController,
-                      children: List.generate(
-                        headlines.length,
-                        (index) {
-                          return HeaderImage(
-                            imageURL: headlines[index].urlToImage,
-                            text: headlines[index].title,
-                          );
-                        },
-                      ),
-                    ),
-            ),
-          ),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return ArticlePage(
-                          articleUrl: articles[index].url,
-                        );
-                      }));
-                    },
-                    child: isLoading
-                        ? buildLoadingList(
-                            height,
-                            width,
-                          )
-                        : buildNewsList(
-                            height,
-                            width,
-                            articles,
-                            index,
-                          ),
-                  );
-                },
-                childCount: isLoading ? 6 : articles.length,
-              ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -158,7 +170,6 @@ class _NewsState extends State<News> {
                   articles[index].title,
                   style: TextStyle(
                     fontSize: 16,
-                    fontFamily: 'ProductSans',
                   ),
                 ),
               ),

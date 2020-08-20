@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HeaderImage extends StatelessWidget {
   const HeaderImage({
@@ -12,34 +13,41 @@ class HeaderImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: height * 0.05,
-        horizontal: 10,
-      ),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(
-            imageURL,
+      child: Stack(
+        children: [
+          Container(
+            constraints: BoxConstraints.expand(),
+            child: Image(
+              image: NetworkImage(imageURL),
+              fit: BoxFit.cover,
+            ),
           ),
-          fit: BoxFit.fill,
-          colorFilter: ColorFilter.mode(
-            const Color(0x33000000),
-            BlendMode.multiply,
+          Container(
+            alignment: Alignment.bottomCenter,
+            padding: EdgeInsets.symmetric(horizontal: 8.0).copyWith(bottom: height * 0.06),
+            constraints: BoxConstraints.expand(),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.transparent, Colors.black87],
+                  stops: [0.0, 1.0],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter),
+            ),
+            child: Text(
+              text,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
+                fontFamily: 'ProductSans',
+              ),
+            ),
           ),
-        ),
+        ],
       ),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: width * 0.054,
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
-          fontFamily: 'ProductSans',
-        ),
-      ),
-      alignment: Alignment.bottomCenter,
     );
   }
 }
