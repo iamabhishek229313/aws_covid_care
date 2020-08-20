@@ -44,6 +44,23 @@ void callbackDispatcher() {
   });
 }
 
+class GridItems {
+  final String title;
+  final Function onPressed;
+  final String imageURL;
+
+  GridItems({this.title, this.onPressed, this.imageURL});
+}
+
+List<GridItems> _gridItem = [
+  GridItems(title: "MAP"),
+  GridItems(title: "ANALYSIS"),
+  GridItems(title: "STATISTICS"),
+  GridItems(title: "PREVENTIONS"),
+  GridItems(title: "SYMPTOMS"),
+  GridItems(title: "NEWS"),
+];
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -222,17 +239,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       physics: NeverScrollableScrollPhysics(),
                       crossAxisCount: 3,
                       childAspectRatio: 0.7,
-                      children: List.generate(6, (index) {
+                      children: List.generate(_gridItem.length, (index) {
                         return AnimationConfiguration.staggeredGrid(
                           columnCount: 3,
                           duration: Duration(milliseconds: 800),
                           position: index,
                           child: ScaleAnimation(
                             scale: 0.5,
-                            child: Container(
-                              margin: EdgeInsets.all(screenHeight * 0.008),
-                              decoration:
-                                  BoxDecoration(color: Colors.red.shade300, borderRadius: BorderRadius.circular(10.0)),
+                            child: InkWell(
+                              onTap: _gridItem[index].onPressed,
+                              child: Container(
+                                margin: EdgeInsets.all(screenHeight * 0.008),
+                                decoration: BoxDecoration(
+                                    color: Colors.red.shade300, borderRadius: BorderRadius.circular(10.0)),
+                                child: Center(
+                                  child: Text(_gridItem[index].title),
+                                ),
+                              ),
                             ),
                           ),
                         );
