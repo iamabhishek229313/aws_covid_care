@@ -208,10 +208,6 @@ class _RegisterState extends State<Register> {
                                       }
 
                                       if (_user != null) {
-                                        SharedPreferences _prefs = await SharedPreferences.getInstance();
-                                        _prefs.setString(AppConstants.userId, _user.uid);
-                                        log("Shared Prefence user id Chnages to new one!");
-                                        // Adding the user to the database.
                                         Coords coord = Coords("XXX XXXXX", "XXXX XXXX");
                                         User _userDetils = User(_fullNameController.text, _emailController.text,
                                             _phoneNumberController.text, coord);

@@ -118,11 +118,8 @@ class _LoginState extends State<Login> {
                                 log("Pass  = " + _passwordController.text);
                                 FirebaseUser _user;
                                 try {
-                                  _user = await _authentication
-                                      .handleSignInEmail(_emailController.text, _passwordController.text)
-                                      .then((value) {
-                                    if (value != null) {}
-                                  });
+                                  _user = await _authentication.handleSignInEmail(
+                                      _emailController.text, _passwordController.text);
                                 } catch (e) {
                                   Widget alert = AlertDialog(
                                     title: Text("Error ceredentials"),
@@ -137,10 +134,6 @@ class _LoginState extends State<Login> {
                                   );
                                   showDialog(context: context, builder: (_) => alert);
                                   log(e.toString());
-                                }
-                                if (_user != null) {
-                                  SharedPreferences _prefs = await SharedPreferences.getInstance();
-                                  _prefs.setString(AppConstants.userId, _user.uid);
                                 }
                               } else {
                                 setState(() {

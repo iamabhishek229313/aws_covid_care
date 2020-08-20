@@ -65,11 +65,6 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ),
                 Align(
-                    child: Text(
-                  "<COVID CARE/>",
-                  style: TextStyle(fontSize: 42.0, color: Colors.white),
-                )),
-                Align(
                   alignment: Alignment.topRight,
                   child: Container(
                     child: Image.asset(
@@ -79,16 +74,26 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ),
                 // Image
-                // Container(
-                //   constraints: BoxConstraints.expand(),
-                //   color: Colors.blueGrey,
-                //   child: Center(
-                //     child: Text(
-                //       "Hello!",
-                //       style: TextStyle(fontSize: 45.0),
-                //     ),
-                //   ),
-                // ),
+                Align(
+                  child: Container(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/icons/covid_icon.png',
+                          height: 90.0,
+                          width: 90.0,
+                          fit: BoxFit.contain,
+                        ),
+                        Align(
+                            child: Text(
+                          "COVID CARE",
+                          style: TextStyle(fontSize: 12.0, color: Colors.white),
+                        )),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           );

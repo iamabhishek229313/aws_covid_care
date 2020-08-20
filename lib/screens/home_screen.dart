@@ -2,13 +2,17 @@ import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:aws_covid_care/models/user.dart';
+import 'package:aws_covid_care/screens/faq_screen.dart';
 import 'package:aws_covid_care/services/notification.dart' as notif;
 
 import 'package:aws_covid_care/services/firebase_authentication.dart';
 import 'package:aws_covid_care/utils/constants.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
@@ -45,6 +49,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Authentication _authentication = Authentication();
+  SharedPreferences _sharedPreferences;
   Firestore _firestore = Firestore.instance;
   User _userDetails;
   bool _tracing = false;
@@ -54,11 +59,15 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  Future<dynamic> _loadingCredentials() async {
-    log("_loading...");
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    String userID = _prefs.getString(AppConstants.userId);
-    log("USER ID " + userID);
+  Future<dynamic> _loadingEngine() async {
+    log("Laoding Engine");
+    _sharedPreferences = await SharedPreferences.getInstance();
+    FirebaseUser _currentUser = await _authentication.getCurrentUser();
+    _sharedPreferences.setString(AppConstants.userId, _currentUser.uid);
+
+    String userID = _sharedPreferences.getString(AppConstants.userId);
+    log("USER ID " + userID.toString());
+
     await _firestore.collection("users").document(userID).get().then((value) {
       _userDetails = User.fromJson(value.data);
       log(_userDetails.toJson().toString());
@@ -92,9 +101,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height;
+    final double screenWidth = MediaQuery.of(context).size.height;
 
     return FutureBuilder(
-      future: _loadingCredentials(),
+      future: _loadingEngine(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (!snapshot.hasData)
           return Container(
@@ -105,10 +115,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
         return Scaffold(
-          // floatingActionButton: FloatingActionButton(
-          //   onPressed: () {},
-          //   child: Icon(Icons.location_on),
-          // ),
           drawer: Drawer(
             child: Column(
               children: [
@@ -129,7 +135,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     accountEmail: Text(_userDetails.email)),
                 ListTile(
                   onTap: () async {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => FAQScreen()));
+                  },
+                  title: Text("FAQ's"),
+                  trailing: Icon(FontAwesomeIcons.questionCircle),
+                ),
+                ListTile(
+                  onTap: () async {
                     await Workmanager.cancelByTag(fetchBackground).then((value) => _authentication.handleSignOut());
+                    _sharedPreferences.remove(AppConstants.userId);
+                  },
+                  title: Text("Logout"),
+                  trailing: Icon(Icons.exit_to_app),
+                ),
+                ListTile(
+                  onTap: () async {
+                    await Workmanager.cancelByTag(fetchBackground).then((value) => _authentication.handleSignOut());
+                    _sharedPreferences.remove(AppConstants.userId);
                   },
                   title: Text("Logout"),
                   trailing: Icon(Icons.exit_to_app),
@@ -138,9 +161,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           appBar: AppBar(
+            backgroundColor: Colors.black,
             title: Text("Home screen"),
             centerTitle: true,
-            elevation: 10.0,
+            elevation: 0.0,
             actions: [
               IconButton(
                   icon: Icon(Icons.refresh),
@@ -150,64 +174,69 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                   icon: Icon(_tracing ? Icons.location_on : Icons.location_off),
                   onPressed: () {
-                    setState(() {});
+                    _startBackgroundLocationTracker();
                   }),
             ],
           ),
-          body: Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: screenHeight * 0.22,
-                  width: double.maxFinite,
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                        autoPlay: true,
-                        autoPlayInterval: Duration(milliseconds: 2400),
-                        autoPlayAnimationDuration: Duration(milliseconds: 800),
-                        enlargeCenterPage: true),
-                    items: List.generate(
-                        9,
-                        (index) => Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.primaries[math.Random().nextInt(18)],
-                                  borderRadius: BorderRadius.circular(10.0)),
-                            )),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: Column(
+                // children: AnimationConfiguration.toStaggeredList(
+                //   duration: Duration(milliseconds: 375),
+                //   childAnimationBuilder: (widget) => SlideAnimation(
+                //     horizontalOffset: screenWidth / 2,
+                //     child: FadeInAnimation(child: widget),
+                //   ),
+                children: [
+                  SizedBox(
+                    height: screenHeight * 0.22,
+                    width: double.maxFinite,
+                    child: CarouselSlider(
+                      options: CarouselOptions(
+                          autoPlay: true,
+                          autoPlayInterval: Duration(milliseconds: 2400),
+                          autoPlayAnimationDuration: Duration(milliseconds: 800),
+                          enlargeCenterPage: true),
+                      items: List.generate(
+                          9,
+                          (index) => Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.primaries[math.Random().nextInt(18)],
+                                    borderRadius: BorderRadius.circular(10.0)),
+                              )),
+                    ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 8.0),
-                  color: Colors.lightGreenAccent,
-                  height: screenHeight * 0.18,
-                ),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.01),
-                    color: Colors.white,
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 8.0),
+                    color: Colors.lightGreenAccent,
+                    height: screenHeight * 0.18,
+                  ),
+                  AnimationLimiter(
                     child: GridView.count(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       crossAxisCount: 3,
-                      childAspectRatio: 1.0,
-                      children: List.generate(9, (index) {
-                        return Material(
-                          elevation: 8.0,
-                          shadowColor: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Container(
-                            padding: EdgeInsets.all(screenHeight * 0.02),
-                            height: screenHeight * 0.09,
-                            width: screenHeight * 0.09,
-                            decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(10.0)),
+                      childAspectRatio: 0.7,
+                      children: List.generate(6, (index) {
+                        return AnimationConfiguration.staggeredGrid(
+                          columnCount: 3,
+                          duration: Duration(milliseconds: 800),
+                          position: index,
+                          child: ScaleAnimation(
+                            scale: 0.5,
                             child: Container(
-                              color: Colors.primaries[math.Random().nextInt(18)],
+                              margin: EdgeInsets.all(screenHeight * 0.008),
+                              decoration:
+                                  BoxDecoration(color: Colors.red.shade300, borderRadius: BorderRadius.circular(10.0)),
                             ),
                           ),
                         );
                       }),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -215,29 +244,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-// Previous body.
-
-// body: Center(
-//   child: Column(
-//     mainAxisAlignment: MainAxisAlignment.center,
-//     children: [
-//       _tracing
-//           ? Text(
-//               'You will be get notified within 15 min/more with counts',
-//               style: TextStyle(fontSize: 14.0, color: Colors.black),
-//             )
-//           : SizedBox(),
-//       RaisedButton(
-//           onPressed: () async {
-//             _startBackgroundLocationTracker();
-//           },
-//           elevation: 10.0,
-//           color: _tracing ? Colors.green : Colors.blueAccent,
-//           child: Text(
-//             _tracing ? "STARTED" : "Start Background Geolocation",
-//             style: TextStyle(fontSize: 18.0, color: Colors.white),
-//           ))
-//     ],
-//   ),
-// ),
