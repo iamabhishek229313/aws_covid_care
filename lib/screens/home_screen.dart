@@ -5,6 +5,7 @@ import 'package:aws_covid_care/models/user.dart';
 import 'package:aws_covid_care/screens/covid_detail_screen.dart';
 import 'package:aws_covid_care/screens/faq_screen.dart';
 import 'package:aws_covid_care/screens/myth_busters_screen.dart';
+import 'package:aws_covid_care/screens/prevention_screen.dart';
 import 'package:aws_covid_care/services/notification.dart' as notif;
 
 import 'package:aws_covid_care/services/firebase_authentication.dart';
@@ -52,15 +53,6 @@ class GridItems {
   GridItems({this.title, this.onPressed, this.imageURL});
 }
 
-List<GridItems> _gridItem = [
-  GridItems(title: "MAP"),
-  GridItems(title: "ANALYSIS"),
-  GridItems(title: "STATISTICS"),
-  GridItems(title: "PREVENTIONS"),
-  GridItems(title: "SYMPTOMS"),
-  GridItems(title: "NEWS"),
-];
-
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -73,9 +65,21 @@ class _HomeScreenState extends State<HomeScreen> {
   User _userDetails;
   bool _tracing = false;
 
+  List<GridItems> _gridItem;
+
   @override
   void initState() {
     super.initState();
+    _gridItem = [
+      GridItems(title: "MAP"),
+      GridItems(title: "ANALYSIS"),
+      GridItems(title: "STATISTICS"),
+      GridItems(
+          title: "PREVENTIONS",
+          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PreventionScreen()))),
+      GridItems(title: "SYMPTOMS"),
+      GridItems(title: "NEWS"),
+    ];
   }
 
   Future<dynamic> _loadingEngine() async {
