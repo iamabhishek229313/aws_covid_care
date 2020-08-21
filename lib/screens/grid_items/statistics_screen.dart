@@ -124,7 +124,15 @@ class _StatisticScreenState extends State<StatisticScreen> {
                     ),
                   )
                 ],
-              ))
+              )),
+          Divider(
+            thickness: 4.0,
+            color: Colors.blueGrey.shade300,
+          ),
+          Expanded(
+              child: Container(
+            color: Colors.red,
+          ))
         ],
       ),
     );
