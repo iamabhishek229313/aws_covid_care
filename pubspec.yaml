@@ -33,6 +33,7 @@ dependencies:
   shimmer: ^1.1.1
   webview_flutter: ^0.3.22+1
   transparent_image: ^1.0.0
+  fl_chart: ^0.8.7
 
 
 dev_dependencies:
