@@ -5,6 +5,7 @@ import 'package:aws_covid_care/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -14,12 +15,21 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   PageController _pageController;
   bool _showFAB;
+  List<String> _imagesURLs;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
     _showFAB = false;
+    _imagesURLs = [
+      "assets/images/obscreen1.png",
+      "assets/images/obscreen2.png",
+      "assets/images/obscreen3.png",
+      "assets/images/obscreen4.png",
+      "assets/images/obscreen4.png",
+      "assets/images/obscreen4.png",
+    ];
   }
 
   @override
@@ -62,11 +72,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: PageView(
                   controller: _pageController,
                   children: List.generate(
-                      6,
-                      (_) => Container(
-                            color: Colors.primaries[Random().nextInt(12)],
+                      _imagesURLs.length,
+                      (index) => Container(
                             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            child: Container(height: 280),
+                            child: Image.asset(
+                              _imagesURLs[index],
+                              fit: BoxFit.fitHeight,
+                            ),
                           )),
                   onPageChanged: (int _pageIndex) {
                     if (_pageIndex == 5) {

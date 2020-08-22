@@ -32,6 +32,11 @@ dependencies:
   flutter_spinkit: "^4.1.2"
   shimmer: ^1.1.1
   webview_flutter: ^0.3.22+1
+  transparent_image: ^1.0.0
+  fl_chart: ^0.8.7
+  country_list_pick: ^1.0.0+5
+  intl: ">=0.14.0"
+  dart_numerics: ^0.0.5
 
 dev_dependencies:
   flutter_test:

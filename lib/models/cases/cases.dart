@@ -55,3 +55,38 @@ class Cases {
     return minMax;
   }
 }
+
+// class Cases {
+//   Global global;
+//   List<Country> countryList;
+// }
+
+// class Country {
+//   String country;
+//   String countryCode;
+//   String slug;
+//   String newConfirmed;
+//   String totalConfirmed;
+//   String newDeaths;
+//   String totalDeaths;
+//   String newRecovered;
+//   String nTotalRecovered;
+// }
+
+// class Global {
+//   String newConfirmed;
+//   String otalConfirmed;
+//   String newDeaths;
+//   String totalDeaths;
+//   String newRecovered;
+//   String totalRecovered;
+
+//   Global({this.newConfirmed, this.otalConfirmed, this.newDeaths, this.totalDeaths, this.newRecovered, this.totalRecovered});
+
+//   factory Global.fromJson(Map<String, String> parsedJson) {
+//     return Global(
+//       newConfirmed = parsedJson['NewConfirmed'];
+
+//     );
+//   }
+// }

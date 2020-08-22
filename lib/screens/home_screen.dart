@@ -5,6 +5,7 @@ import 'package:aws_covid_care/models/user.dart';
 import 'package:aws_covid_care/screens/covid_detail_screen.dart';
 import 'package:aws_covid_care/screens/faq_screen.dart';
 import 'package:aws_covid_care/screens/grid_items/news_screen.dart';
+import 'package:aws_covid_care/screens/grid_items/statistics_screen.dart';
 import 'package:aws_covid_care/screens/grid_items/symptoms_screen.dart';
 import 'package:aws_covid_care/screens/myth_busters_screen.dart';
 import 'package:aws_covid_care/screens/grid_items/prevention_screen.dart';
@@ -75,7 +76,9 @@ class _HomeScreenState extends State<HomeScreen> {
     _gridItem = [
       GridItems(title: "MAP"),
       GridItems(title: "ANALYSIS"),
-      GridItems(title: "STATISTICS"),
+      GridItems(
+          title: "STATISTICS",
+          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => StatisticScreen()))),
       GridItems(
           title: "PREVENTIONS",
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PreventionScreen()))),
