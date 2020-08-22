@@ -83,8 +83,6 @@ class CaseChart extends StatelessWidget {
       CurrentData.cases.dateWiseConfirmedCases.forEach(
         (key, value) {
           xAxis++;
-          print('Confirmed Value: $value');
-          print('Confirm Value Length: ${CurrentData.cases.dateWiseConfirmedCases.length}');
           chartData.add(FlSpot(xAxis, double.parse(value)));
         },
       );
@@ -93,7 +91,6 @@ class CaseChart extends StatelessWidget {
       CurrentData.cases.dateWiseRecoveredCases.forEach(
         (key, value) {
           xAxis++;
-          print('Recovered Value: $value');
           chartData.add(FlSpot(xAxis, double.parse(value)));
         },
       );
@@ -102,12 +99,10 @@ class CaseChart extends StatelessWidget {
       CurrentData.cases.dateWiseDeceasedCases.forEach(
         (key, value) {
           xAxis++;
-          print('Deceased Value: $value');
           chartData.add(FlSpot(xAxis, double.parse(value)));
         },
       );
     }
-    print(chartData.length);
     return chartData;
   }
 }

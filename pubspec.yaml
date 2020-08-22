@@ -35,7 +35,8 @@ dependencies:
   transparent_image: ^1.0.0
   fl_chart: ^0.8.7
   country_list_pick: ^1.0.0+5
-
+  intl: ">=0.14.0"
+  dart_numerics: ^0.0.5
 
 dev_dependencies:
   flutter_test:
