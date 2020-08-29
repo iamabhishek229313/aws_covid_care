@@ -1,6 +1,7 @@
 import 'package:aws_covid_care/core/repository/static/symptoms_data.dart';
 import 'package:cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_fade/image_fade.dart';
 
 class SymptomsScreen extends StatelessWidget {
@@ -43,7 +44,9 @@ class SymptomsScreen extends StatelessWidget {
                                   placeholder: Container(
                                     height: MediaQuery.of(context).size.height,
                                     child: Center(
-                                      child: CircularProgressIndicator(),
+                                      child: SpinKitFadingCircle(
+                                        color: Colors.blue,
+                                      ),
                                     ),
                                   ),
                                 ),

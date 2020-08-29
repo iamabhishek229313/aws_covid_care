@@ -74,18 +74,24 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _gridItem = [
-      GridItems(title: "MAP"),
-      GridItems(title: "ANALYSIS"),
+      GridItems(title: "MAP", imageURL: 'assets/icons/maps.png'),
+      GridItems(title: "ANALYSIS", imageURL: 'assets/icons/analysis.png'),
       GridItems(
           title: "STATISTICS",
+          imageURL: 'assets/icons/statistics.png',
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => StatisticScreen()))),
       GridItems(
           title: "PREVENTIONS",
+          imageURL: 'assets/icons/prevention.png',
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PreventionScreen()))),
       GridItems(
           title: "SYMPTOMS",
+          imageURL: 'assets/icons/symptoms.png',
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => SymptomsScreen()))),
-      GridItems(title: "NEWS", onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => News()))),
+      GridItems(
+          title: "NEWS",
+          imageURL: 'assets/icons/news.png',
+          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => News()))),
     ];
   }
 
@@ -261,10 +267,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               onTap: _gridItem[index].onPressed,
                               child: Container(
                                 margin: EdgeInsets.all(screenHeight * 0.008),
-                                decoration: BoxDecoration(
-                                    color: Colors.red.shade300, borderRadius: BorderRadius.circular(10.0)),
-                                child: Center(
-                                  child: Text(_gridItem[index].title),
+                                decoration:
+                                    BoxDecoration(color: Colors.blueAccent, borderRadius: BorderRadius.circular(10.0)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Image.asset(
+                                      _gridItem[index].imageURL,
+                                      height: 80.0,
+                                      color: Colors.white,
+                                      fit: BoxFit.contain,
+                                    ),
+                                    Text(
+                                      _gridItem[index].title,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
