@@ -17,6 +17,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   PageController _pageController;
   bool _showFAB;
   List<String> _imagesURLs;
+  List<String> _texts;
 
   @override
   void initState() {
@@ -24,10 +25,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     _pageController = PageController();
     _showFAB = false;
     _imagesURLs = [
-      "assets/images/obscreen1.png",
-      "assets/images/obscreen2.png",
-      "assets/images/obscreen3.png",
-      "assets/images/obscreen4.png",
+      "assets/images/obscreen1new.png",
+      "assets/images/obscreen2new.png",
+      "assets/images/obscreen3new.png",
+      "assets/images/obscreen4new.png",
+    ];
+    _texts = [
+      'We can together fight COVID 19',
+      'Take Preventions and Precautions',
+      'Stay at Home',
+      'Senitize your Hands frequently'
     ];
   }
 
@@ -40,6 +47,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       // backgroundColor: Colors.grey.shade50,
       floatingActionButton: _showFAB
           ? FloatingActionButton.extended(
+              elevation: 10.0,
               onPressed: () async {
                 // Below code will a make boolean value in the device memory saying user have
                 // gone through the onboard screens.
@@ -47,10 +55,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 prefs.setBool(AppConstants.firstUser, true).then((value) {
                   print("Saved Preference as a value of = " + value.toString());
                 });
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (_) => StateWrapperScreen()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => StateWrapperScreen()));
               },
-              backgroundColor: Colors.black54,
+              backgroundColor: Colors.black,
               icon: Icon(
                 Icons.check,
                 color: Colors.white,
@@ -77,280 +84,69 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   height: screenHeight * 0.8,
                   child: PageView(
                     controller: _pageController,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.white10,
-                                    blurRadius: 30.0, // soften the shadow
-                                    spreadRadius: 0.0, //extend the shadow
-                                    offset: Offset(
-                                      0.0, // Move to right 10  horizontally
-                                      0.0, // Move to bottom 5 Vertically
+                    children: List.generate(
+                        _imagesURLs.length,
+                        (index) => Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.white10,
+                                          blurRadius: 30.0, // soften the shadow
+                                          spreadRadius: 0.0, //extend the shadow
+                                          offset: Offset(
+                                            0.0, // Move to right 10  horizontally
+                                            0.0, // Move to bottom 5 Vertically
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                  )
+                                    padding: EdgeInsets.all(10),
+                                    height: screenHeight * 0.6,
+                                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                    child: Image.asset(
+                                      _imagesURLs[index],
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.white,
+                                            blurRadius: 10.0, // soften the shadow
+                                            spreadRadius: 0.0, //extend the shadow
+                                            offset: Offset(
+                                              0.0, // Move to right 10  horizontally
+                                              2.0, // Move to bottom 5 Vertically
+                                            ),
+                                          )
+                                        ],
+                                        borderRadius: BorderRadius.circular(100),
+                                        gradient: LinearGradient(
+                                            end: Alignment.bottomRight,
+                                            begin: Alignment.topLeft,
+                                            colors: [
+                                              Colors.white,
+                                              Colors.blueAccent[100],
+                                              Colors.white,
+                                            ])),
+                                    padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                    height: screenHeight * 0.1,
+                                    width: screenWidth,
+                                    child: Center(
+                                        child: Text(
+                                      _texts[index],
+                                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),
+                                    )),
+                                  ),
                                 ],
                               ),
-                              padding: EdgeInsets.all(10),
-                              height: screenHeight * 0.6,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 4),
-                              child: Image.asset(
-                                'assets/images/obscreen1new.png',
-                                fit: BoxFit.fitHeight,
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.white,
-                                      blurRadius: 10.0, // soften the shadow
-                                      spreadRadius: 0.0, //extend the shadow
-                                      offset: Offset(
-                                        0.0, // Move to right 10  horizontally
-                                        0.0, // Move to bottom 5 Vertically
-                                      ),
-                                    )
-                                  ],
-                                  borderRadius: BorderRadius.circular(100),
-                                  gradient: LinearGradient(colors: [
-                                    Colors.white,
-                                    Colors.blueAccent[100],
-                                    Colors.white,
-                                  ])),
-                              padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                              height: screenHeight * 0.1,
-                              width: screenWidth,
-                              child: Container(
-                                width: screenWidth,
-                                child: Center(
-                                    child: Text(
-                                  'We can together fight COVID 19',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black45),
-                                )),
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(10.0)),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.white10,
-                                    blurRadius: 30.0, // soften the shadow
-                                    spreadRadius: 0.0, //extend the shadow
-                                    offset: Offset(
-                                      0.0, // Move to right 10  horizontally
-                                      0.0, // Move to bottom 5 Vertically
-                                    ),
-                                  )
-                                ],
-                              ),
-                              padding: EdgeInsets.all(10),
-                              height: screenHeight * 0.6,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 4),
-                              child: Image.asset(
-                                'assets/images/obscreen2new.png',
-                                fit: BoxFit.fitHeight,
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.white,
-                                      blurRadius: 10.0, // soften the shadow
-                                      spreadRadius: 0.0, //extend the shadow
-                                      offset: Offset(
-                                        0.0, // Move to right 10  horizontally
-                                        0.0, // Move to bottom 5 Vertically
-                                      ),
-                                    )
-                                  ],
-                                  borderRadius: BorderRadius.circular(100),
-                                  gradient: LinearGradient(colors: [
-                                    Colors.white,
-                                    Colors.blueAccent[100],
-                                    Colors.white,
-                                  ])),
-                              padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                              height: screenHeight * 0.1,
-                              width: screenWidth,
-                              child: Container(
-                                width: screenWidth,
-                                child: Center(
-                                    child: Text(
-                                  'Take Preventions and Precautions',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black45),
-                                )),
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(10.0)),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.white10,
-                                    blurRadius: 30.0, // soften the shadow
-                                    spreadRadius: 0.0, //extend the shadow
-                                    offset: Offset(
-                                      0.0, // Move to right 10  horizontally
-                                      0.0, // Move to bottom 5 Vertically
-                                    ),
-                                  )
-                                ],
-                              ),
-                              padding: EdgeInsets.all(10),
-                              height: screenHeight * 0.6,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 4),
-                              child: Image.asset(
-                                'assets/images/obscreen3new.png',
-                                fit: BoxFit.fitHeight,
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.white,
-                                      blurRadius: 10.0, // soften the shadow
-                                      spreadRadius: 0.0, //extend the shadow
-                                      offset: Offset(
-                                        0.0, // Move to right 10  horizontally
-                                        0.0, // Move to bottom 5 Vertically
-                                      ),
-                                    )
-                                  ],
-                                  borderRadius: BorderRadius.circular(100),
-                                  gradient: LinearGradient(colors: [
-                                    Colors.white,
-                                    Colors.blueAccent[100],
-                                    Colors.white,
-                                  ])),
-                              padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                              height: screenHeight * 0.1,
-                              width: screenWidth,
-                              child: Container(
-                                width: screenWidth,
-                                child: Center(
-                                    child: Text(
-                                  'Stay at Home',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black45),
-                                )),
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(10.0)),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.white10,
-                                    blurRadius: 30.0, // soften the shadow
-                                    spreadRadius: 0.0, //extend the shadow
-                                    offset: Offset(
-                                      0.0, // Move to right 10  horizontally
-                                      0.0, // Move to bottom 5 Vertically
-                                    ),
-                                  )
-                                ],
-                              ),
-                              padding: EdgeInsets.all(10),
-                              height: screenHeight * 0.6,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 4),
-                              child: Image.asset(
-                                'assets/images/obscreen4new.png',
-                                fit: BoxFit.fitHeight,
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.white,
-                                      blurRadius: 10.0, // soften the shadow
-                                      spreadRadius: 0.0, //extend the shadow
-                                      offset: Offset(
-                                        0.0, // Move to right 10  horizontally
-                                        0.0, // Move to bottom 5 Vertically
-                                      ),
-                                    )
-                                  ],
-                                  borderRadius: BorderRadius.circular(100),
-                                  gradient: LinearGradient(colors: [
-                                    Colors.white,
-                                    Colors.blueAccent[100],
-                                    Colors.white,
-                                  ])),
-                              padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                              height: screenHeight * 0.1,
-                              width: screenWidth,
-                              child: Container(
-                                width: screenWidth,
-                                child: Center(
-                                    child: Text(
-                                  'Senitize your Hands frequently',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black45),
-                                )),
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(10.0)),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                            )),
                     onPageChanged: (int _pageIndex) {
                       if (_pageIndex == 3) {
                         setState(() {
@@ -368,9 +164,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: SmoothPageIndicator(
                     controller: _pageController,
                     count: 4,
-                    effect: WormEffect(
-                        activeDotColor: Colors.blueAccent,
-                        dotColor: Colors.blue.shade50),
+                    effect: WormEffect(activeDotColor: Colors.blueAccent, dotColor: Colors.blue.shade50),
                   ),
                 ),
               ],
