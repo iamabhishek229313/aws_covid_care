@@ -24,21 +24,23 @@ import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
+CarouselController buttonCarouselController = CarouselController();
 const fetchBackground = "fetchBackground";
-
 void callbackDispatcher() {
   Workmanager.executeTask((taskName, inputData) async {
     switch (taskName) {
       case fetchBackground:
         // Making a varibale in the Shared preferences.
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        int count = prefs.getInt(AppConstants.locationDected) ?? 0; // Setting it null, if it is a first try.
+        int count = prefs.getInt(AppConstants.locationDected) ??
+            0; // Setting it null, if it is a first try.
         count++; // Incrementing the count by one.
         // Setting the values in the Shared Preferences.
         prefs.setInt(AppConstants.locationDected, count);
 
         // Detecting the location.
-        Position _fetchedUserLocation = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        Position _fetchedUserLocation = await Geolocator()
+            .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
         // After collection of Data send it to the flutter_local_notifications. (Both Position Object & count are passed up to show them.)
         notif.Notification _notif = new notif.Notification();
@@ -83,19 +85,23 @@ class _HomeScreenState extends State<HomeScreen> {
       GridItems(
           title: "STATISTICS",
           imageURL: 'assets/icons/statistics.png',
-          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => StatisticScreen()))),
+          onPressed: () => Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => StatisticScreen()))),
       GridItems(
           title: "PREVENTIONS",
           imageURL: 'assets/icons/prevention.png',
-          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PreventionScreen()))),
+          onPressed: () => Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => PreventionScreen()))),
       GridItems(
           title: "SYMPTOMS",
           imageURL: 'assets/icons/symptoms.png',
-          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => SymptomsScreen()))),
+          onPressed: () => Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => SymptomsScreen()))),
       GridItems(
           title: "NEWS",
           imageURL: 'assets/icons/news.png',
-          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => News()))),
+          onPressed: () => Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => News()))),
     ];
   }
 
@@ -118,8 +124,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void _startBackgroundLocationTracker() async {
     Geolocator _geolocator = Geolocator();
     await _geolocator.checkGeolocationPermissionStatus();
-    await _geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    GeolocationStatus _geoStatus = await _geolocator.checkGeolocationPermissionStatus();
+    await _geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    GeolocationStatus _geoStatus =
+        await _geolocator.checkGeolocationPermissionStatus();
     log("GEOSTATUS VALUE" + _geoStatus.value.toString());
     if (_geoStatus.value == 2) {
       log("Location Allowed!");
@@ -127,12 +135,15 @@ class _HomeScreenState extends State<HomeScreen> {
         _tracing = true;
       });
       Workmanager.initialize(callbackDispatcher, isInDebugMode: false);
-      Workmanager.registerPeriodicTask("1", fetchBackground, frequency: Duration(minutes: 15));
+      Workmanager.registerPeriodicTask("1", fetchBackground,
+          frequency: Duration(minutes: 15));
     } else {
       Widget alert = AlertDialog(
         title: Text("Allow location"),
         content: Text("We don't spy 🍻"),
-        actions: [FlatButton(onPressed: () => Navigator.pop(context), child: Text("OK"))],
+        actions: [
+          FlatButton(onPressed: () => Navigator.pop(context), child: Text("OK"))
+        ],
       );
       showDialog(context: context, builder: (_) => alert);
     }
@@ -170,13 +181,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     accountName: Text(
                       _userDetails.displayName.toUpperCase(),
-                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w700),
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.w700),
                     ),
                     accountEmail: Text(_userDetails.email)),
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => MythBusterScreen()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => MythBusterScreen()));
                   },
                   title: Text("Myth Busters"),
                   trailing: Icon(FontAwesomeIcons.fileMedicalAlt),
@@ -184,7 +197,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => CovidDetailScreen()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => CovidDetailScreen()));
                   },
                   title: Text("What is COVID-19?"),
                   trailing: Icon(FontAwesomeIcons.viruses),
@@ -192,14 +206,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => FAQScreen()));
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) => FAQScreen()));
                   },
                   title: Text("FAQ's"),
                   trailing: Icon(FontAwesomeIcons.questionCircle),
                 ),
                 ListTile(
                   onTap: () async {
-                    await Workmanager.cancelByTag(fetchBackground).then((value) => _authentication.handleSignOut());
+                    await Workmanager.cancelByTag(fetchBackground)
+                        .then((value) => _authentication.handleSignOut());
                     _sharedPreferences.remove(AppConstants.userId);
                   },
                   title: Text("Logout"),
@@ -231,68 +247,185 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.only(top: 8.0),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: screenHeight * 0.22,
-                    width: double.maxFinite,
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                          autoPlay: true,
-                          autoPlayInterval: Duration(milliseconds: 2400),
-                          autoPlayAnimationDuration: Duration(milliseconds: 800),
-                          enlargeCenterPage: true),
-                      items: List.generate(
-                          9,
-                          (index) => Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.primaries[math.Random().nextInt(18)],
-                                    borderRadius: BorderRadius.circular(10.0)),
-                              )),
-                    ),
-                  ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 8.0),
-                    color: Colors.lightGreenAccent,
-                    height: screenHeight * 0.18,
-                  ),
-                  AnimationLimiter(
-                    child: GridView.count(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      crossAxisCount: 3,
-                      childAspectRatio: 0.7,
-                      children: List.generate(_gridItem.length, (index) {
-                        return AnimationConfiguration.staggeredGrid(
-                          columnCount: 3,
-                          duration: Duration(milliseconds: 800),
-                          position: index,
-                          child: ScaleAnimation(
-                            scale: 0.5,
-                            child: InkWell(
-                              onTap: _gridItem[index].onPressed,
-                              child: Container(
-                                margin: EdgeInsets.all(screenHeight * 0.008),
-                                decoration:
-                                    BoxDecoration(color: Colors.blueAccent, borderRadius: BorderRadius.circular(10.0)),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Image.asset(
-                                      _gridItem[index].imageURL,
-                                      height: 80.0,
-                                      color: Colors.white,
-                                      fit: BoxFit.contain,
-                                    ),
-                                    Text(
-                                      _gridItem[index].title,
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ],
+                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      height: screenHeight * 0.40,
+                      width: double.maxFinite,
+                      child: CarouselSlider(
+                        carouselController: buttonCarouselController,
+                        options: CarouselOptions(
+                            autoPlay: true,
+                            autoPlayInterval: Duration(milliseconds: 2400),
+                            autoPlayAnimationDuration:
+                                Duration(milliseconds: 800),
+                            enlargeCenterPage: true),
+                        items: [
+                          Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  height: screenHeight * 0.20,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/doc2.png')),
+                                      color: Colors
+                                          .primaries[math.Random().nextInt(12)],
+                                      borderRadius: BorderRadius.circular(9.0)),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    color: Colors.grey[200],
+                                  ),
+                                  padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                  height: screenHeight * 0.03,
+                                  width: screenWidth,
+                                  child: Container(
+                                    width: screenWidth,
+                                    child: Center(
+                                        child: Text(
+                                      'We can together fight COVID 19',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                                    decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  height: screenHeight * 0.20,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/family3.png')),
+                                      color: Colors
+                                          .primaries[math.Random().nextInt(12)],
+                                      borderRadius: BorderRadius.circular(9.0)),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    color: Colors.grey[200],
+                                  ),
+                                  padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                  height: screenHeight * 0.03,
+                                  width: screenWidth,
+                                  child: Container(
+                                    width: screenWidth,
+                                    child: Center(
+                                        child: Text(
+                                      'We can together fight COVID 19',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                                    decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  height: screenHeight * 0.20,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/Temp.png')),
+                                      color: Colors
+                                          .primaries[math.Random().nextInt(12)],
+                                      borderRadius: BorderRadius.circular(9.0)),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    color: Colors.grey[200],
+                                  ),
+                                  padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                  height: screenHeight * 0.03,
+                                  width: screenWidth,
+                                  child: Container(
+                                    width: screenWidth,
+                                    child: Center(
+                                        child: Text(
+                                      'We can together fight COVID 19',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                                    decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )),
+                  Container(
+                    child: AnimationLimiter(
+                      child: GridView.count(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        crossAxisCount: 3,
+                        childAspectRatio: 0.7,
+                        children: List.generate(_gridItem.length, (index) {
+                          return AnimationConfiguration.staggeredGrid(
+                            columnCount: 3,
+                            duration: Duration(milliseconds: 800),
+                            position: index,
+                            child: ScaleAnimation(
+                              scale: 0.5,
+                              child: InkWell(
+                                onTap: _gridItem[index].onPressed,
+                                child: Container(
+                                  margin: EdgeInsets.all(screenHeight * 0.008),
+                                  decoration: BoxDecoration(
+                                      color: Colors.blueAccent,
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Image.asset(
+                                        _gridItem[index].imageURL,
+                                        height: 80.0,
+                                        color: Colors.white,
+                                        fit: BoxFit.contain,
+                                      ),
+                                      Text(
+                                        _gridItem[index].title,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
+                      ),
                     ),
                   ),
                 ],
