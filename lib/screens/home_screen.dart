@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'dart:math' as math;
 
+import 'package:aws_covid_care/components/carousel_widget.dart';
 import 'package:aws_covid_care/models/user.dart';
 import 'package:aws_covid_care/screens/covid_detail_screen.dart';
 import 'package:aws_covid_care/screens/faq_screen.dart';
+import 'package:aws_covid_care/screens/grid_items/map_screen.dart';
 import 'package:aws_covid_care/screens/grid_items/news_screen.dart';
 import 'package:aws_covid_care/screens/grid_items/statistics_screen.dart';
 import 'package:aws_covid_care/screens/grid_items/symptoms_screen.dart';
@@ -12,6 +14,7 @@ import 'package:aws_covid_care/screens/grid_items/prevention_screen.dart';
 import 'package:aws_covid_care/services/notification.dart' as notif;
 
 import 'package:aws_covid_care/services/firebase_authentication.dart';
+import 'package:aws_covid_care/utils/carousel_item.dart';
 import 'package:aws_covid_care/utils/constants.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,8 +26,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
+CarouselController buttonCarouselController = CarouselController();
 const fetchBackground = "fetchBackground";
-
 void callbackDispatcher() {
   Workmanager.executeTask((taskName, inputData) async {
     switch (taskName) {
@@ -74,18 +77,27 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _gridItem = [
-      GridItems(title: "MAP"),
-      GridItems(title: "ANALYSIS"),
+      GridItems(
+          title: "MAP",
+          imageURL: 'assets/icons/maps.png',
+          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => MapScreen()))),
+      GridItems(title: "ANALYSIS", imageURL: 'assets/icons/analysis.png'),
       GridItems(
           title: "STATISTICS",
+          imageURL: 'assets/icons/statistics.png',
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => StatisticScreen()))),
       GridItems(
           title: "PREVENTIONS",
+          imageURL: 'assets/icons/prevention.png',
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PreventionScreen()))),
       GridItems(
           title: "SYMPTOMS",
+          imageURL: 'assets/icons/symptoms.png',
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => SymptomsScreen()))),
-      GridItems(title: "NEWS", onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => News()))),
+      GridItems(
+          title: "NEWS",
+          imageURL: 'assets/icons/news.png',
+          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => News()))),
     ];
   }
 
@@ -146,6 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         return Scaffold(
           drawer: Drawer(
+            elevation: 10.0,
             child: Column(
               children: [
                 UserAccountsDrawerHeader(
@@ -195,6 +208,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: Text("Logout"),
                   trailing: Icon(Icons.exit_to_app),
                 ),
+                Spacer(),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    "#StayHomeStaySafe",
+                    style: TextStyle(fontSize: 16.0, color: Colors.red.shade900),
+                  ),
+                )
               ],
             ),
           ),
@@ -202,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.black,
             title: Text("Home screen"),
             centerTitle: true,
-            elevation: 0.0,
+            elevation: 10.0,
             actions: [
               IconButton(
                   icon: Icon(Icons.refresh),
@@ -221,56 +242,75 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.only(top: 8.0),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: screenHeight * 0.22,
-                    width: double.maxFinite,
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                          autoPlay: true,
-                          autoPlayInterval: Duration(milliseconds: 2400),
-                          autoPlayAnimationDuration: Duration(milliseconds: 800),
-                          enlargeCenterPage: true),
-                      items: List.generate(
-                          9,
-                          (index) => Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.primaries[math.Random().nextInt(18)],
-                                    borderRadius: BorderRadius.circular(10.0)),
-                              )),
-                    ),
-                  ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 8.0),
-                    color: Colors.lightGreenAccent,
-                    height: screenHeight * 0.18,
-                  ),
-                  AnimationLimiter(
-                    child: GridView.count(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      crossAxisCount: 3,
-                      childAspectRatio: 0.7,
-                      children: List.generate(_gridItem.length, (index) {
-                        return AnimationConfiguration.staggeredGrid(
-                          columnCount: 3,
-                          duration: Duration(milliseconds: 800),
-                          position: index,
-                          child: ScaleAnimation(
-                            scale: 0.5,
-                            child: InkWell(
-                              onTap: _gridItem[index].onPressed,
-                              child: Container(
-                                margin: EdgeInsets.all(screenHeight * 0.008),
-                                decoration: BoxDecoration(
-                                    color: Colors.red.shade300, borderRadius: BorderRadius.circular(10.0)),
-                                child: Center(
-                                  child: Text(_gridItem[index].title),
+                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      height: screenHeight * 0.40,
+                      width: double.maxFinite,
+                      child: CarouselSlider(
+                        carouselController: buttonCarouselController,
+                        options: CarouselOptions(
+                            aspectRatio: 1.0,
+                            scrollPhysics: BouncingScrollPhysics(),
+                            autoPlay: true,
+                            autoPlayInterval: Duration(milliseconds: 2400),
+                            autoPlayAnimationDuration: Duration(milliseconds: 800),
+                            enlargeCenterPage: true),
+                        items: carouselItemList
+                            .map(
+                              (e) => CarouselWidget(
+                                imageUrl: e.imageUrl,
+                                text: e.text,
+                              ),
+                            )
+                            .toList(),
+                      )),
+                  Container(
+                    child: AnimationLimiter(
+                      child: GridView.count(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        crossAxisCount: 3,
+                        childAspectRatio: 0.7,
+                        children: List.generate(_gridItem.length, (index) {
+                          return AnimationConfiguration.staggeredGrid(
+                            columnCount: 3,
+                            duration: Duration(milliseconds: 800),
+                            position: index,
+                            child: ScaleAnimation(
+                              scale: 0.5,
+                              child: InkWell(
+                                onTap: _gridItem[index].onPressed,
+                                child: Container(
+                                  margin: EdgeInsets.all(screenHeight * 0.008),
+                                  decoration: BoxDecoration(boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.blueAccent.shade100,
+                                      spreadRadius: 1,
+                                      blurRadius: 7,
+                                      offset: Offset(0, 1.5), // changes position of shadow
+                                    ),
+                                  ], color: Colors.blueAccent, borderRadius: BorderRadius.circular(10.0)),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Image.asset(
+                                        _gridItem[index].imageURL,
+                                        height: 80.0,
+                                        color: Colors.white,
+                                        fit: BoxFit.contain,
+                                      ),
+                                      Text(
+                                        _gridItem[index].title,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
+                      ),
                     ),
                   ),
                 ],

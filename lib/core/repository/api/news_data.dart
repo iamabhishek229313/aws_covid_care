@@ -5,7 +5,7 @@ import 'package:aws_covid_care/utils/constants.dart';
 class NewsData {
   List<Article> articles = [];
   String url =
-      'https://newsapi.org/v2/everything?q=covid-19&sortBy=publishedAt&from=2020-07-29&language=en&apiKey=${AppConstants.apiKey}';
+      'https://newsapi.org/v2/everything?q=covid-19&sortBy=publishedAt&from=2020-08-15&language=en&apiKey=${AppConstants.apiKey}';
   refresh() async {
     var data = await NetworkService.fetchData(url);
     List newsData = data['articles'];
