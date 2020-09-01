@@ -24,14 +24,14 @@ class CarouselWidget extends StatelessWidget {
             decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.amber,
+                    color: Colors.pink.shade50,
                     spreadRadius: 5,
                     blurRadius: 7,
                     offset: Offset(0, 1.5), // changes position of shadow
                   ),
                 ],
                 image: DecorationImage(image: AssetImage(this.imageUrl), fit: BoxFit.cover),
-                color: Colors.transparent,
+                color: Colors.pink.shade100,
                 borderRadius: BorderRadius.circular(10.0)),
           ),
           SizedBox(
@@ -42,10 +42,10 @@ class CarouselWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(30.0),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.purple.shade100,
-                  spreadRadius: 5,
-                  blurRadius: 10,
-                  offset: Offset(0, 1.2), // changes position of shadow
+                  color: Colors.grey.shade300,
+                  spreadRadius: 2,
+                  blurRadius: 5.0,
+                  offset: Offset(1.0, 1.2), // changes position of shadow
                 ),
               ],
               color: Colors.grey[200],
@@ -57,6 +57,7 @@ class CarouselWidget extends StatelessWidget {
                 child: Text(
               this.text,
               maxLines: 3,
+              textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
             )),
