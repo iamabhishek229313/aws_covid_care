@@ -1,5 +1,6 @@
 import 'package:aws_covid_care/core/repository/static/faq_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class FAQScreen extends StatelessWidget {
@@ -10,11 +11,18 @@ class FAQScreen extends StatelessWidget {
         backgroundColor: Colors.black,
         title: Text("Frequently asked questions"),
       ),
-      body: ListView(
-        physics: BouncingScrollPhysics(),
-        children: List.generate(
-            faqData.length,
-            (index) => ExpansionTile(
+      body: AnimationLimiter(
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: faqData.length,
+          itemBuilder: (BuildContext context, int index) {
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              duration: const Duration(milliseconds: 375),
+              child: SlideAnimation(
+                verticalOffset: 44.0,
+                child: FadeInAnimation(
+                    child: ExpansionTile(
                   title: Text(faqData[index].title),
                   leading: Icon(FontAwesomeIcons.questionCircle),
                   children: [
@@ -27,6 +35,10 @@ class FAQScreen extends StatelessWidget {
                         ))
                   ],
                 )),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

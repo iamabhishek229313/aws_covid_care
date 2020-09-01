@@ -3,7 +3,7 @@ import 'package:aws_covid_care/models/articles.dart';
 import 'package:aws_covid_care/utils/constants.dart';
 
 class TopheadlinesData {
-  String url = 'https://newsapi.org/v2/top-headlines?country=in&q=covid-19&apiKey=${AppConstants.apiKey}';
+  String url = 'https://newsapi.org/v2/top-headlines?country=us&q=covid-19&apiKey=${AppConstants.apiKey}';
   List<Article> headlines = [];
 
   refresh() async {

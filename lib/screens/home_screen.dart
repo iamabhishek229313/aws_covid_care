@@ -1,10 +1,13 @@
 import 'dart:developer';
 import 'dart:math' as math;
+import 'package:http/http.dart' as http;
 
 import 'package:aws_covid_care/components/carousel_widget.dart';
+import 'package:aws_covid_care/components/home_drawer.dart';
 import 'package:aws_covid_care/models/user.dart';
 import 'package:aws_covid_care/screens/covid_detail_screen.dart';
 import 'package:aws_covid_care/screens/faq_screen.dart';
+import 'package:aws_covid_care/screens/grid_items/analysis_screen.dart';
 import 'package:aws_covid_care/screens/grid_items/map_screen.dart';
 import 'package:aws_covid_care/screens/grid_items/news_screen.dart';
 import 'package:aws_covid_care/screens/grid_items/statistics_screen.dart';
@@ -42,6 +45,22 @@ void callbackDispatcher() {
         // Detecting the location.
         Position _fetchedUserLocation = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
+        log(_fetchedUserLocation.latitude.toString() + _fetchedUserLocation.longitude.toString());
+
+        // Send data to server
+        var response = await http.post('http://3.19.223.188/get_zone', body: {
+          "user_id": prefs.getString(AppConstants.userId),
+          "lat": _fetchedUserLocation.latitude.toString(),
+          "lang": _fetchedUserLocation.longitude.toString(),
+          "timestamp": DateTime.now().millisecondsSinceEpoch
+        }).then((value) {
+          log("API WORKING");
+        }).catchError(() {
+          log("API CATCHED ERROR");
+        });
+
+        log("RESPONSE :" + response.body);
+
         // After collection of Data send it to the flutter_local_notifications. (Both Position Object & count are passed up to show them.)
         notif.Notification _notif = new notif.Notification();
         _notif.showNotificationWithoutSound(_fetchedUserLocation, count);
@@ -69,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
   SharedPreferences _sharedPreferences;
   Firestore _firestore = Firestore.instance;
   User _userDetails;
-  bool _tracing = false;
+  bool _bgService; // Taking by shared Preferences.
 
   List<GridItems> _gridItem;
 
@@ -81,7 +100,10 @@ class _HomeScreenState extends State<HomeScreen> {
           title: "MAP",
           imageURL: 'assets/icons/maps.png',
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => MapScreen()))),
-      GridItems(title: "ANALYSIS", imageURL: 'assets/icons/analysis.png'),
+      GridItems(
+          title: "ANALYSIS",
+          imageURL: 'assets/icons/analysis.png',
+          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => AnalysisScreen()))),
       GridItems(
           title: "STATISTICS",
           imageURL: 'assets/icons/statistics.png',
@@ -102,13 +124,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<dynamic> _loadingEngine() async {
-    log("Laoding Engine");
+    log("Loading Engine");
     _sharedPreferences = await SharedPreferences.getInstance();
     FirebaseUser _currentUser = await _authentication.getCurrentUser();
     _sharedPreferences.setString(AppConstants.userId, _currentUser.uid);
 
     String userID = _sharedPreferences.getString(AppConstants.userId);
     log("USER ID " + userID.toString());
+
+    _bgService = _sharedPreferences.getBool(AppConstants.backgroundTracing) ?? false;
 
     await _firestore.collection("users").document(userID).get().then((value) {
       _userDetails = User.fromJson(value.data);
@@ -126,10 +150,11 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_geoStatus.value == 2) {
       log("Location Allowed!");
       setState(() {
-        _tracing = true;
+        // _tracing = true;
+        _sharedPreferences.setBool(AppConstants.backgroundTracing, true);
       });
       Workmanager.initialize(callbackDispatcher, isInDebugMode: false);
-      Workmanager.registerPeriodicTask("1", fetchBackground, frequency: Duration(minutes: 15));
+      Workmanager.registerPeriodicTask("locationService", fetchBackground, frequency: Duration(minutes: 15));
     } else {
       Widget alert = AlertDialog(
         title: Text("Allow location"),
@@ -157,71 +182,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
         return Scaffold(
-          drawer: Drawer(
-            elevation: 10.0,
-            child: Column(
-              children: [
-                UserAccountsDrawerHeader(
-                    currentAccountPicture: CircleAvatar(
-                      backgroundColor: Colors.orange,
-                      child: Image.asset(
-                        'assets/icons/mask_person.png',
-                        width: 50.0,
-                        height: 60.0,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                    accountName: Text(
-                      _userDetails.displayName.toUpperCase(),
-                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w700),
-                    ),
-                    accountEmail: Text(_userDetails.email)),
-                ListTile(
-                  onTap: () async {
-                    Navigator.pop(context);
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => MythBusterScreen()));
-                  },
-                  title: Text("Myth Busters"),
-                  trailing: Icon(FontAwesomeIcons.fileMedicalAlt),
-                ),
-                ListTile(
-                  onTap: () async {
-                    Navigator.pop(context);
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => CovidDetailScreen()));
-                  },
-                  title: Text("What is COVID-19?"),
-                  trailing: Icon(FontAwesomeIcons.viruses),
-                ),
-                ListTile(
-                  onTap: () async {
-                    Navigator.pop(context);
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => FAQScreen()));
-                  },
-                  title: Text("FAQ's"),
-                  trailing: Icon(FontAwesomeIcons.questionCircle),
-                ),
-                ListTile(
-                  onTap: () async {
-                    await Workmanager.cancelByTag(fetchBackground).then((value) => _authentication.handleSignOut());
-                    _sharedPreferences.remove(AppConstants.userId);
-                  },
-                  title: Text("Logout"),
-                  trailing: Icon(Icons.exit_to_app),
-                ),
-                Spacer(),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                    "#StayHomeStaySafe",
-                    style: TextStyle(fontSize: 16.0, color: Colors.red.shade900),
-                  ),
-                )
-              ],
-            ),
-          ),
+          drawer: HomeDrawer(
+              userDetails: _userDetails, authentication: _authentication, sharedPreferences: _sharedPreferences),
           appBar: AppBar(
             backgroundColor: Colors.black,
-            title: Text("Home screen"),
+            title: Icon(
+              Icons.home,
+              color: Colors.white,
+            ),
             centerTitle: true,
             elevation: 10.0,
             actions: [
@@ -231,9 +199,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     setState(() {});
                   }),
               IconButton(
-                  icon: Icon(_tracing ? Icons.location_on : Icons.location_off),
+                  icon: Icon((_bgService ?? 0) ? Icons.location_on : Icons.location_off),
                   onPressed: () {
-                    _startBackgroundLocationTracker();
+                    // if(_tarcing)
+                    if (_bgService) {
+                      Workmanager.cancelByUniqueName("locationService");
+                      _sharedPreferences.setBool(AppConstants.backgroundTracing, false);
+                      setState(() {});
+                    } else {
+                      _startBackgroundLocationTracker();
+                    }
                   }),
             ],
           ),
