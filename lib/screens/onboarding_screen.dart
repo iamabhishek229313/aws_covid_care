@@ -66,11 +66,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             )
           : null,
       body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Colors.white, Colors.blueAccent[200], Colors.white])),
+        decoration: BoxDecoration(),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 0.0),
           child: Center(
@@ -112,26 +108,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   ),
                                   Container(
                                     decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.white,
-                                            blurRadius: 10.0, // soften the shadow
-                                            spreadRadius: 0.0, //extend the shadow
-                                            offset: Offset(
-                                              0.0, // Move to right 10  horizontally
-                                              2.0, // Move to bottom 5 Vertically
-                                            ),
-                                          )
-                                        ],
-                                        borderRadius: BorderRadius.circular(100),
-                                        gradient: LinearGradient(
-                                            end: Alignment.bottomRight,
-                                            begin: Alignment.topLeft,
-                                            colors: [
-                                              Colors.white,
-                                              Colors.blueAccent[100],
-                                              Colors.white,
-                                            ])),
+                                      border: Border.all(color: Colors.black54),
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
                                     padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
                                     height: screenHeight * 0.1,
                                     width: screenWidth,

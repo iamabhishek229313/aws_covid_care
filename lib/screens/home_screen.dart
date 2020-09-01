@@ -50,7 +50,7 @@ void callbackDispatcher() {
 
         // Send data to server
         var response = await http
-            .post('http://3.19.223.188/get_zone',
+            .post('http://100.25.129.202/docs/get_zone',
                 body: json.encode({
                   "user_id": prefs.getString(AppConstants.userId),
                   "lat": _fetchedUserLocation.latitude.toString(),
