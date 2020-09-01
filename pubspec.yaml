@@ -39,6 +39,7 @@ dependencies:
   dart_numerics: "^0.0.5"
   built_path: ^0.1.0
   built_path_annotations: ^0.1.0
+  charts_flutter: 
   
 
 dev_dependencies:
