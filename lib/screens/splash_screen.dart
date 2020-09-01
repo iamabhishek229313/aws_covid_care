@@ -48,11 +48,17 @@ class _SplashScreenState extends State<SplashScreen> {
           return Container(
             decoration: BoxDecoration(
                 color: Colors.red,
-                gradient: LinearGradient(
-                    colors: [Colors.black87, Colors.indigo.shade900, Colors.indigo.shade800, Colors.black87],
-                    stops: [0.0, 8.0, 6.0, 1.0],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight)),
+                gradient: LinearGradient(colors: [
+                  Colors.blue.shade900,
+                  Colors.blue.shade200,
+                  Colors.blue.shade600,
+                  Colors.blueAccent.shade700
+                ], stops: [
+                  0.0,
+                  4.0,
+                  6.0,
+                  1.0
+                ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
             child: Stack(
               children: [
                 Align(
@@ -80,15 +86,18 @@ class _SplashScreenState extends State<SplashScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset(
-                          'assets/icons/covid_icon.png',
+                          'assets/icons/app_icon.png',
                           height: 90.0,
                           width: 90.0,
                           fit: BoxFit.contain,
                         ),
+                        SizedBox(
+                          height: 24.0,
+                        ),
                         Align(
                             child: Text(
-                          "COVID CARE",
-                          style: TextStyle(fontSize: 12.0, color: Colors.white),
+                          "TRACK MY COVID",
+                          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600, color: Colors.white),
                         )),
                       ],
                     ),
