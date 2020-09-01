@@ -146,8 +146,29 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
               );
             return ListView(
               physics: BouncingScrollPhysics(),
-              padding: EdgeInsets.only(top: 24.0, bottom: 24.0),
+              padding: EdgeInsets.only(top: 8.0, bottom: 24.0),
               children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: 'Based on area you are classified at ',
+                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500, color: Colors.black),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'Zone 2',
+                            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.deepOrange)),
+                      ],
+                    ),
+                  ),
+                ),
                 GraphWidget(
                   seriesList: _riskList,
                   x_axis_name: 'Zone',
@@ -177,6 +198,30 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                   x_axis_name: 'Categories',
                   y_axis_name: 'Risk %',
                   title: 'Different types of risks with precautions over the 21 days',
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: 'Based on these statistics there is a resonable chance for contracting  ',
+                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500, color: Colors.black),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'COVID-19 ',
+                            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.red.shade900)),
+                        TextSpan(
+                            text: 'please take proper precautions.',
+                            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.black)),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             );
