@@ -176,28 +176,37 @@ class _StatisticScreenState extends State<StatisticScreen> {
                       ),
                       SizedBox(
                         height: screenHeight * 0.3,
-                        child: StatsCard(
-                          isloading: this.isLoading,
-                          title: ['CONFIRMED', 'RECOVERED', 'DECEASED'],
-                          totalCount: isLoading ? ['0', '0', '0'] : [gTotalConfirmed, gTotalRecovered, gTotalDeadth],
-                          // totalCount: isLoading ? ['0', '0', '0'] : [cases.confirmed, cases.recovered, cases.deceased],
-                          // todayCount: isLoading ? '0' : cases.todayRecoveredCount,
-                          // yesterdayCount: isLoading ? '0' : cases.yesterdayRecoveredCount,
-                          todayCount: isLoading
-                              ? ['0', '0', '0']
-                              : [cases.todayTotalCount, cases.todayRecoveredCount, cases.todayDeceasedCount],
-                          yesterdayCount: isLoading
-                              ? ['0', '0', '0']
-                              : [
-                                  cases.yesterdatTotalCount,
-                                  cases.yesterdayRecoveredCount,
-                                  cases.yesterdayDeceasedCount
-                                ],
-                          showChartType: [
-                            CaseChartType.dailyconfirmed,
-                            CaseChartType.dailyrecovered,
-                            CaseChartType.dailydeceased
-                          ],
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => MoreStatsScreen(
+                                      cases: cases,
+                                      isLoading: this.isLoading,
+                                    )));
+                          },
+                          child: StatsCard(
+                            isloading: this.isLoading,
+                            title: ['CONFIRMED', 'RECOVERED', 'DECEASED'],
+                            totalCount: isLoading ? ['0', '0', '0'] : [gTotalConfirmed, gTotalRecovered, gTotalDeadth],
+                            // totalCount: isLoading ? ['0', '0', '0'] : [cases.confirmed, cases.recovered, cases.deceased],
+                            // todayCount: isLoading ? '0' : cases.todayRecoveredCount,
+                            // yesterdayCount: isLoading ? '0' : cases.yesterdayRecoveredCount,
+                            todayCount: isLoading
+                                ? ['0', '0', '0']
+                                : [cases.todayTotalCount, cases.todayRecoveredCount, cases.todayDeceasedCount],
+                            yesterdayCount: isLoading
+                                ? ['0', '0', '0']
+                                : [
+                                    cases.yesterdatTotalCount,
+                                    cases.yesterdayRecoveredCount,
+                                    cases.yesterdayDeceasedCount
+                                  ],
+                            showChartType: [
+                              CaseChartType.dailyconfirmed,
+                              CaseChartType.dailyrecovered,
+                              CaseChartType.dailydeceased
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -206,11 +215,6 @@ class _StatisticScreenState extends State<StatisticScreen> {
                       Align(
                         child: InkWell(
                           onTap: () {
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (_) => MoreStatsScreen(
-                            //           cases: cases,
-                            //           isLoading: this.isLoading,
-                            //         )));
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => EachCountryDetailScreen(
                                       data: countriesData,
@@ -345,7 +349,7 @@ class _ByCountryWidgetState extends State<ByCountryWidget> with TickerProviderSt
                 showEnglishName: true,
                 initialSelection: '+1',
                 onChanged: (CountryCode code) {
-                  print(code.name);
+                  print(code.dialCode);
                   countryName = code.name;
                   refreshData();
                 },
@@ -439,6 +443,14 @@ class _ByCountryWidgetState extends State<ByCountryWidget> with TickerProviderSt
                               ),
                             )
                           : LineChart(LineChartData(
+                              // lineTouchData: LineTouchData(enabled: true),
+                              lineTouchData: LineTouchData(
+                                touchTooltipData: LineTouchTooltipData(
+                                  tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+                                ),
+                                touchCallback: (LineTouchResponse touchResponse) {},
+                                handleBuiltInTouches: true,
+                              ),
                               gridData: FlGridData(
                                 show: true,
                                 drawVerticalLine: true,
@@ -522,9 +534,7 @@ class _ByCountryWidgetState extends State<ByCountryWidget> with TickerProviderSt
                                   colors: [Colors.white, Colors.orange],
                                   barWidth: 2.0,
                                   isStrokeCapRound: true,
-                                  dotData: FlDotData(
-                                    show: false,
-                                  ),
+                                  dotData: FlDotData(show: false),
                                   belowBarData: BarAreaData(
                                     show: true,
                                     colors:

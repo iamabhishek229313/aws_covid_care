@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:math' as math;
+import 'package:http/http.dart' as http;
 
 import 'package:aws_covid_care/components/carousel_widget.dart';
 import 'package:aws_covid_care/components/home_drawer.dart';
@@ -43,6 +44,22 @@ void callbackDispatcher() {
 
         // Detecting the location.
         Position _fetchedUserLocation = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+        log(_fetchedUserLocation.latitude.toString() + _fetchedUserLocation.longitude.toString());
+
+        // Send data to server
+        var response = await http.post('http://3.19.223.188/get_zone', body: {
+          "user_id": prefs.getString(AppConstants.userId),
+          "lat": _fetchedUserLocation.latitude.toString(),
+          "lang": _fetchedUserLocation.longitude.toString(),
+          "timestamp": DateTime.now().millisecondsSinceEpoch
+        }).then((value) {
+          log("API WORKING");
+        }).catchError(() {
+          log("API CATCHED ERROR");
+        });
+
+        log("RESPONSE :" + response.body);
 
         // After collection of Data send it to the flutter_local_notifications. (Both Position Object & count are passed up to show them.)
         notif.Notification _notif = new notif.Notification();
