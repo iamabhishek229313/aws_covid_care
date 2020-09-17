@@ -9,26 +9,44 @@
 Building this app for AWS Data-Exchange Hackathon.
 
 ## 📱 Screenshots
-|                                                     Splash Screen                                                      |                                                   Login Page                                                   |
+|                                                     Splash Screen                                                      |                                                   Onboarding Screen                                                   |
 |:----------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------:|
-| ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_splash_screen.png?raw=true) | ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_login.png?raw=true) |
+| <img width="1440" alt="Screen Shot 2020-09-17 at 3 26 13 PM" src="https://user-images.githubusercontent.com/56549294/93459992-3d2e9280-f900-11ea-84e4-9ef6b81d86cc.png">|<img width="1440" alt="Screen Shot 2020-09-17 at 3 35 48 PM" src="https://user-images.githubusercontent.com/56549294/93460044-51728f80-f900-11ea-9b32-e89e492720cc.png">|
 
-|                                          Phone number verification                                           |                                                  Profile Screen                                                  |
+|                                          Login Screen                                           |                                                  Signup Screen                                                  |
 |:------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------:|
-| ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_otp.png?raw=true) | ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_profile.png?raw=true) |
+| <img width="1440" alt="Screen Shot 2020-09-17 at 3 36 23 PM" src="https://user-images.githubusercontent.com/56549294/93460069-56cfda00-f900-11ea-9d91-02b20848ffca.png"> | <img width="1440" alt="Screen Shot 2020-09-17 at 3 36 54 PM" src="https://user-images.githubusercontent.com/56549294/93460079-58010700-f900-11ea-9139-386cf744c6e6.png"> |
 
 
-|                                                    Messages and Feeds                                                     |                                                    In person chat                                                     |
+|                                                    Home Screen                                                     |                                                    Drawer                                                     |
 |:-------------------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------:|
-| ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_messagesandfeeds.png?raw=true) | ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_InChatScreen.png?raw=true) |
+| <img width="1440" alt="Screen Shot 2020-09-17 at 3 38 48 PM" src="https://user-images.githubusercontent.com/56549294/93460087-59323400-f900-11ea-971e-23713a8794a1.png">| <img width="1440" alt="Screen Shot 2020-09-17 at 3 44 17 PM" src="https://user-images.githubusercontent.com/56549294/93460224-87b00f00-f900-11ea-84cb-59168156fafc.png"> |
 
-|                                              Tinder Right Swipe                                               |                                               Tinder Left Swipe                                               |
+|                                              Map                                              |                                               All Countries Details                                                |
 |:-------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
-| ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_nope.png?raw=true) | ![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_like.png?raw=true) |
+| <img width="1440" alt="Screen Shot 2020-09-17 at 3 46 54 PM" src="https://user-images.githubusercontent.com/56549294/93460227-8848a580-f900-11ea-8e97-abbe8d3c2d5f.png"> | <img width="1440" alt="Screen Shot 2020-09-17 at 3 40 44 PM" src="https://user-images.githubusercontent.com/56549294/93460293-9dbdcf80-f900-11ea-9d50-fb585913eb18.png">|
 
- Matchings     |
-:-------------------------:|
-![](https://github.com/iamabhishek229313/tinder_clone/blob/master/screenshots/tinder_clone_main.png)
+|                                              Analysis(1)                                               |                                               Analysis(2)                                                |
+|:-------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
+| <img width="1440" alt="Screen Shot 2020-09-17 at 3 41 18 PM" src="https://user-images.githubusercontent.com/56549294/93460208-8252c480-f900-11ea-9f90-e55d08341732.png"> | <img width="1440" alt="Screen Shot 2020-09-17 at 3 42 11 PM" src="https://user-images.githubusercontent.com/56549294/93460218-867ee200-f900-11ea-8321-8b1eceecffdb.png"> |
+
+|                                              Statistics(Confirmed)                                               |                                               Statistics(Recovery)                                                |
+|:-------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
+| <img width="1440" alt="Screen Shot 2020-09-17 at 3 57 54 PM" src="https://user-images.githubusercontent.com/56549294/93460232-8979d280-f900-11ea-975f-fae4ef974615.png"> | <img width="1440" alt="Screen Shot 2020-09-17 at 3 58 53 PM" src="https://user-images.githubusercontent.com/56549294/93460238-8b439600-f900-11ea-8220-22b2962c5569.png"> |
+
+|                                              Preventions                                              |                                               Symptoms                                                 |
+|:-------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
+| <img width="1440" alt="Screen Shot 2020-09-17 at 3 49 08 PM" src="https://user-images.githubusercontent.com/56549294/93460421-d1005e80-f900-11ea-919d-ace7b9a70a6d.png"> | <img width="1440" alt="Screen Shot 2020-09-17 at 3 40 20 PM" src="https://user-images.githubusercontent.com/56549294/93460478-e5445b80-f900-11ea-815c-d1acf7e6c9f0.png"> |
+
+|                                              News                                              |                                               Myth Bursters                                                |
+|:-------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
+| <img width="1440" alt="Screen Shot 2020-09-17 at 3 48 26 PM" src="https://user-images.githubusercontent.com/56549294/93460502-ed040000-f900-11ea-8a56-f942a9f92752.png"> | <img width="1440" alt="Screen Shot 2020-09-17 at 3 47 30 PM" src="https://user-images.githubusercontent.com/56549294/93460973-aebb1080-f901-11ea-9533-ad25d01bc314.png"> |
+
+|                                              What is COVID-19                                              |                                               F.A.Qs                                                |
+|:-------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
+| <img width="1440" alt="Screen Shot 2020-09-17 at 3 56 58 PM" src="https://user-images.githubusercontent.com/56549294/93460981-b24e9780-f901-11ea-9315-a568c9ffdbd0.png"> | <img width="1440" alt="Screen Shot 2020-09-17 at 3 45 48 PM" src="https://user-images.githubusercontent.com/56549294/93461004-baa6d280-f901-11ea-8802-9d60beddb64d.png"> |
+
+
 
 ## ☄ Inspiration 
 
