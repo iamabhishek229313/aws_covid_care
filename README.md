@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
-# TrackmyCovid
+# <kbd><img height="42" src="https://raw.githubusercontent.com/iamabhishek229313/aws_covid_care/master/assets/icons/app_icon_final.png"></kbd>  TrackmyCovid
 
 Building this app for AWS Data-Exchange Hackathon.
 
