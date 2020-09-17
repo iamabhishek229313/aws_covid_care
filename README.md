@@ -50,10 +50,9 @@ Building this app for AWS Data-Exchange Hackathon.
 
 ## ☄ Inspiration 
 
-```
+
 The safest way place to be in this pandemic would be at home but going out is always an inevitable thing whether its for groceries or for other necessities. Going out during this pandemic contributes a risk of getting infected with COVID19. But how much exactly is that risk of going out poses to your health in general? In hindsight of that question, this project aims to give every user a perspective on how much their exposure levels are to COVID 19 based on their daily activity of going out.
 
-```
 
 ## ⚛ What it does
 
