@@ -6,7 +6,10 @@
 
 # <kbd><img height="42" src="https://raw.githubusercontent.com/iamabhishek229313/aws_covid_care/master/assets/icons/app_icon_final.png"></kbd>  TrackmyCovid
 
-Building this app for AWS Data-Exchange Hackathon.
+#### (14th August 2020)
+Started building this app for AWS Data-Exchange Hackathon.
+#### (6th October 2020)
+AWS Data-Exchange Hackathon Winner.
 
 ## 📱 Screenshots
 |                                                     Splash Screen                                                      |                                                   Onboarding Screen                                                   |
