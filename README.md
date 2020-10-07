@@ -93,6 +93,18 @@ Flutter SDK.
 
 The next steps for TrackMyCovid are creating a map view of the world with green, orange, and red zones and creating more personalized reports based on COVID exposure and creating more accurate estimates. Furthermore, we plan on developing a map view to push notifications when you enter a new zone the app gives statistics on that zone and furthermore precautions for that exact zone.
 
+## ✨ Team
+Thanks goes to these wonderful people:
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/iamabhishek229313"><img src="https://avatars1.githubusercontent.com/u/44896537?s=400&u=a17556e4ecb9e5ab8de122e526efbd58bd8b3519&v=4" width="100px;" alt=""/><br /><sub><b>Abhishek kumar</b></sub></td>
+    <td align="center"><a href="https://github.com/appidiabhinav"><img src="https://avatars2.githubusercontent.com/u/11048767?s=400&u=a016550a1b38a309d55f2d8d1e988330c3d23f12&v=4" width="100px;" alt=""/><br /><sub><b>Abhinav Appidi</b></sub></td>
+      <td align="center"><a href="https://github.com/krishnardt"><img src="https://avatars3.githubusercontent.com/u/31960541?s=400&u=47f4829c77f4962ab437ffb7995951e41eeebe9b&v=4" width="100px;" alt=""/><br /><sub><b>KrishNa</b></sub></td>
+        <td align="center"><a href="https://www.linkedin.com/in/rohit-ganti-64280a19b/"><img src="https://media-exp1.licdn.com/dms/image/C5603AQE-xTJLN34d3Q/profile-displayphoto-shrink_800_800/0?e=1607558400&v=beta&t=utIXElEz9PehtKmpuB7L3PMuTBD_eI0iOVFBqQdLv3g" width="100px;" alt=""/><br /><sub><b>Rohit Ganti</b></sub></td>
+          <td align="center"><a href="https://github.com/ArshdeepSahni"><img src="https://avatars1.githubusercontent.com/u/56549294?s=400&u=b7186b77504fd4e6a9edce2287973b4843521010&v=4" width="100px;" alt=""/><br /><sub><b>Arshdeep Singh</b></sub></td>
+  </tr>
+</table>
+
 
 ## ⚒ Pull Request 
 I welcome and encourage all pull requests. It usually will take me within 24-48 hours to respond to any issue or request.
