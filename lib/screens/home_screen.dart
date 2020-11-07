@@ -30,7 +30,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
-CarouselController buttonCarouselController = CarouselController();
 const fetchBackground = "fetchBackground";
 void callbackDispatcher() {
   Workmanager.executeTask((taskName, inputData) async {
@@ -94,11 +93,14 @@ class _HomeScreenState extends State<HomeScreen> {
   User _userDetails;
   bool _bgService; // Taking by shared Preferences.
 
+  CarouselController buttonCarouselController;
+
   List<GridItems> _gridItem;
 
   @override
   void initState() {
     super.initState();
+    buttonCarouselController = CarouselController();
     _gridItem = [
       GridItems(
           title: "MAP",

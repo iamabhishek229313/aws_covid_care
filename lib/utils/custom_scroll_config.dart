@@ -1,5 +1,6 @@
-import 'dart:io';
+import 'dart:io' as io;
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 /// Custom scroll behaviour to remove the [TargetPlatform.android] glow
@@ -14,7 +15,7 @@ class CustomScrollBehaviour implements ScrollBehavior {
 
   @override
   TargetPlatform getPlatform(BuildContext context) {
-    if (Platform.isIOS) return TargetPlatform.iOS;
+    if (io.Platform.isIOS) return TargetPlatform.iOS;
     return TargetPlatform.android;
   }
 
@@ -26,5 +27,11 @@ class CustomScrollBehaviour implements ScrollBehavior {
   @override
   bool shouldNotify(ScrollBehavior oldDelegate) {
     return false;
+  }
+
+  @override
+  velocityTrackerBuilder(BuildContext context) {
+    // TODO: implement velocityTrackerBuilder
+    return (event) {};
   }
 }
